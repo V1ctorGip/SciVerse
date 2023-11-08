@@ -224,23 +224,29 @@
           width: 100%;
           padding: 20px;
           display: grid;
-          grid-template-columns: repeat(4, 1fr);
+          grid-template-columns: repeat(4, 1fr); /* Quatro cartões por linha por padrão */
           grid-gap: 30px;
         }
         
         .cardBox .card {
-          position: relative;
           background: var(--white);
           padding: 30px;
           border-radius: 20px;
           display: flex;
           justify-content: space-between;
+          align-items: center; /* Adicionado para alinhar itens verticalmente */
           cursor: pointer;
           box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+          border: 1px solid #2a2185;
+        }
+        
+        .cardBox .card .numbers,
+        .cardBox .card .cardName,
+        .cardBox .card .iconBx {
+          transition: color 0.3s; /* Suavizar a transição de cores */
         }
         
         .cardBox .card .numbers {
-          position: relative;
           font-weight: 500;
           font-size: 2.5rem;
           color: var(--blue);
@@ -260,45 +266,101 @@
         .cardBox .card:hover {
           background: var(--blue);
         }
+        
         .cardBox .card:hover .numbers,
         .cardBox .card:hover .cardName,
         .cardBox .card:hover .iconBx {
           color: var(--white);
         }
         
-        .details .cardHeader {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
+        /* Responsividade */
+        @media (max-width: 1500px) {
+          .cardBox {
+            grid-template-columns: repeat(3, 1fr); /* Três cartões por linha para telas um pouco menores */
+          }
         }
-
+        
+        @media (max-width: 1366px) {
+          .cardBox {
+            grid-template-columns: repeat(4, 1fr); /* Mantém quatro cartões por linha */
+          }
+        }
+        
+        @media (max-width: 768px) {
+          .cardBox {
+            grid-template-columns: 1fr; /* Um cartão por linha para telas de smartphones */
+          }
+        }
+        
         .cardHeadersContainer {
-          display: flex;
-          justify-content: space-between;
-          flex-wrap: wrap;
-      }
-      
-      .cardHeader, .cardHeader2, .cardHeader3, .cardHeader4 {
-          width: calc(50% - 20px); /* Ocupa metade do espaço, menos 20px de margem */
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta automaticamente o número de colunas baseado no tamanho da tela e no tamanho mínimo dos cartões */
+          grid-gap: 20px; /* Espaçamento entre os cartões */
           margin: 10px;
-          position: responsive;
-      }
-      .cardHeader2 .chart-container, .cardHeader4 .chart-container {
-        margin-left: 5px; 
-    }
-      
-      .cardHeader h2, .cardHeader2 h2, .cardHeader3 h2, .cardHeader4 h2 {
+          padding: 10px;
+        }
+        
+        .cardHeader,
+        .cardHeader2,
+        .cardHeader3,
+        .cardHeader4 {
+          background-color: #fff;
+          border: 1px solid #2a2185;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          padding: 5px;
+          overflow: auto;
+          min-height: 100px;
+        }
+        
+        .cardHeader h2,
+        .cardHeader2 h2,
+        .cardHeader3 h2,
+        .cardHeader4 h2 {
           font-size: 24px;
-          font-weight: bold;
-          margin-bottom: 10px;
-          position: responsive;
-          top: 0%;
-          left: 1%;
           font-weight: 600;
+          margin-bottom: 10px;
           color: var(--blue);
           text-align: center;
-      }
+        }
+        
+        .chart-container {
+          position: relative; /* 'responsive' não é um valor válido para a propriedade 'position' */
+          margin: 0 auto;
+          width: 100%; /* O gráfico ocupará todo o espaço disponível no container */
+          height: 30vh;
+          background-color: #fff;
+          border-radius: 5px;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+          padding: 5px;
+          overflow: auto;
+          min-height: 100px;
+        }
+        
+        /* Media queries para ajustar o layout baseado no tamanho da tela */
+        @media (max-width: 768px) {
+          .cardHeadersContainer {
+            grid-template-columns: 1fr; /* Uma coluna para telas pequenas */
+          }
+        }
+        
+        @media (min-width: 769px) and (max-width: 1024px) {
+          .cardHeadersContainer {
+            grid-template-columns: 1fr 1fr; /* Duas colunas para tablets e telas médias */
+          }
+        }
+        
+        @media (min-width: 1025px) {
+          .cardHeadersContainer {
+            grid-template-columns: 1fr 1fr; /* Duas colunas para telas maiores, ajustando-se conforme necessário */
+          }
+        }
 
+        @media (min-width: 500px) {
+          .cardHeadersContainer {
+            grid-template-columns: 1fr 1fr; /* Duas colunas para telas maiores, ajustando-se conforme necessário */
+          }
+        }
     
         /* ====================== Responsive Design ========================== */
         @media (max-width: 991px) {
@@ -320,22 +382,6 @@
             grid-template-columns: repeat(2, 1fr);
           }
         }
-   
-        .chart-container {
-            position: responsive;
-            margin-left: 17px;
-            top: 15px;
-            left: 20px;
-            width: 42.5vw;
-            height: 30vh;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 5px;
-            overflow: auto; /* Adicione o overflow para permitir rolagem */
-            min-height: 100px; /* Altura mínima para garantir visibilidade */
-          }
           
           .circle-logo {
             width: 80px; /* Largura do círculo branco */
@@ -504,14 +550,14 @@
               <div class="cardHeader3">
                 <h2>Distribuição 3</h2>
                 <div class="chart-container">
-                    <canvas id="courseDistributionChart"></canvas>
+                  <canvas id="radarChart"></canvas>
                 </div>
               </div>
-
+              
               <div class="cardHeader4">
                 <h2>Distribuição 4</h2>
                 <div class="chart-container">
-                    <canvas id="courseDistributionChart"></canvas>
+                  <canvas id="barChart"></canvas>
                 </div>
               </div>
 
@@ -598,7 +644,93 @@
               }
           }
       });
-   
+      
+      const radarData = {
+        labels: [
+          'Eating',
+          'Drinking',
+          'Sleeping',
+          'Designing',
+          'Coding',
+          'Cycling',
+          'Running'
+        ],
+        datasets: [{
+          label: 'My First Dataset',
+          data: [65, 59, 90, 81, 56, 55, 40],
+          fill: true,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgb(255, 99, 132)',
+          pointBackgroundColor: 'rgb(255, 99, 132)',
+          pointBorderColor: '#fff',
+          pointHoverBackgroundColor: '#fff',
+          pointHoverBorderColor: 'rgb(255, 99, 132)'
+        }]
+      };
+      
+      const radarOptions = {
+        responsive: true, // Garante que o gráfico seja responsivo
+        maintainAspectRatio: false, // Remove a manutenção da proporção de aspecto para permitir o preenchimento completo
+        // outras opções...
+      };
+      
+      // Dados e opções para o gráfico de barras
+      const barData = {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [{
+          label: 'My First Dataset',
+          data: [65, 59, 80, 81, 56, 55, 40],
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(199, 199, 199, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)',
+            'rgba(159, 159, 159, 1)'
+          ],
+          borderWidth: 1
+        }]
+      };
+      
+      const barOptions = {
+        responsive: true, // Garante que o gráfico seja responsivo
+        maintainAspectRatio: false, // Remove a manutenção da proporção de aspecto para permitir o preenchimento completo
+        // Configurações dos eixos e outras opções...
+        scales: {
+          yAxes: [{
+            ticks: {
+              beginAtZero: true,
+            },
+          }],
+          xAxes: [{
+            // configurações para o eixo x
+          }],
+        },
+      };
+      
+      // Criar o gráfico de radar
+      new Chart(document.getElementById('radarChart'), {
+        type: 'radar',
+        data: radarData,
+        options: radarOptions
+      });
+      
+      // Criar o gráfico de barras
+      new Chart(document.getElementById('barChart'), {
+        type: 'bar',
+        data: barData,
+        options: barOptions
+      });
 
 
     </script>
