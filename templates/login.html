@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <style>
+        body {
+            background: -webkit-linear-gradient(left, #1126d9, #8e2f79);
+            background: -moz-linear-gradient(left, #1126d9, #8e2f79);
+            background: -ms-linear-gradient(left, #1126d9, #8e2f79);
+            background: -o-linear-gradient(left, #1126d9, #8e2f79);
+            background: linear-gradient(to right, #1126d9, #8e2f79);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .login-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        img {
+            width: 300px;
+            margin-bottom: 20px;
+        }
+        input, button {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #c5159e;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #a3128a;
+        }
+        .signup-message {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        {% load static %}
+        <img src="{% static 'Logo_Auth.png' %}" alt="Logo">
+        <form id="loginForm" action="{% url 'login' %}" method="POST">
+            {% csrf_token %}
+            <input type="text" name="username" placeholder="Usuário" required>
+            <input type="password" name="password" placeholder="Senha" required>
+            <button type="submit">Entrar</button>
+        </form>
+        <div class="signup-message">
+            <p>Não tem uma conta? <a href="{% url 'autentica' %}">Faça seu cadastro aqui.</a></p>
+        </div>
+    </div>
+
+    <!-- Pop-up de carregamento -->
+    <div id="loadingPopup" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;">
+        <p style="background-color:white;padding:20px;border-radius:5px;">Redirecionando...</p>
+    </div>
+
+    <!-- Pop-up de erro -->
+    <div id="errorPopup" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;">
+        <div style="background-color:white;padding:20px;border-radius:5px;text-align:center;">
+            <p id="errorText" style="color:red;">Usuário ou senha inválidos, tente novamente</p>
+            <div style="color:red;font-size:30px;">&times;</div>
+        </div>
+    </div>
+
+    <!-- JavaScript para controlar os pop-ups -->
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.getElementById('loadingPopup').style.display = 'flex';
+            setTimeout(function () {
+                e.target.submit();
+            }, 2000);
+        });
+
+        document.addEventListener("DOMContentLoaded", function(){
+            {% if messages %}
+                {% for message in messages %}
+                    if("{{ message.tags }}" == "error"){
+                        document.getElementById('errorText').innerText = "{{ message }}";
+                        document.getElementById('errorPopup').style.display = 'flex';
+                        setTimeout(function () {
+                            document.getElementById('errorPopup').style.display = 'none';
+                        }, 2000);
+                    }
+                {% endfor %}
+            {% endif %}
+        });
+    </script>
+</body>
+</html>
