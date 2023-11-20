@@ -3,13 +3,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Responsive Admin Dashboard | Korsat X Parmaga</title>
-    {% block css %}
-    {% endblock %}
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
         * {
@@ -202,88 +200,33 @@
           font-size: 1.2rem;
         }
         
-        .user {
-          position: relative;
-          width: 40px;
-          height: 40px;
-          border-radius: 50%;
-          overflow: hidden;
-          cursor: pointer;
-        }
-        
-        .user img {
+        .back-icon {
           position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-        
-        /* ======================= Cards ====================== */
-        .cardBox {
-          position: relative;
-          width: 100%;
-          padding: 20px;
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          grid-gap: 30px;
-        }
-        
-        .cardBox .card {
-          position: relative;
-          background: var(--white);
-          padding: 30px;
-          border-radius: 20px;
-          display: flex;
-          justify-content: space-between;
+          right: 20px;
+          top: 15px;
+          font-size: 30px;
           cursor: pointer;
-          box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+          color: var(--black1);
         }
-        
-        .cardBox .card .numbers {
-          position: relative;
-          font-weight: 500;
-          font-size: 2.5rem;
-          color: var(--blue);
-        }
-        
-        .cardBox .card .cardName {
-          color: var(--black2);
-          font-size: 1.1rem;
-          margin-top: 5px;
-        }
-        
-        .cardBox .card .iconBx {
-          font-size: 3.5rem;
-          color: var(--black2);
-        }
-        
-        .cardBox .card:hover {
-          background: var(--blue);
-        }
-        .cardBox .card:hover .numbers,
-        .cardBox .card:hover .cardName,
-        .cardBox .card:hover .iconBx {
-          color: var(--white);
-        }
-        
-        .details .cardHeader {
-          display: flex;
-          justify-content: space-between;
-          align-items: flex-start;
-        }
-        .cardHeader h2 {
-            font-size: 24px; /* Tamanho da fonte do título */
-            font-weight: bold; /* Peso da fonte do título */
-            margin-bottom: 10px; /* Espaçamento abaixo do título */
-            position: relative;
-            top: 30%; /* Posição vertical do título */
-            left: 1%; /* Posição horizontal do título */
-            font-weight: 600;
-            color: var(--blue);
-          }
-       
+
+/* Media queries para ajustar o layout baseado no tamanho da tela */
+@media (max-width: 768px) {
+  .cardHeadersContainer {
+    grid-template-columns: 1fr; /* Uma coluna para telas pequenas */
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .cardHeadersContainer {
+    grid-template-columns: 1fr 1fr; /* Duas colunas para tablets e telas médias */
+  }
+}
+
+@media (min-width: 1025px) {
+  .cardHeadersContainer {
+    grid-template-columns: 1fr 1fr; /* Duas colunas para telas maiores, ajustando-se conforme necessário */
+  }
+}
         /* ====================== Responsive Design ========================== */
         @media (max-width: 991px) {
           .navigation {
@@ -300,25 +243,7 @@
           .main.active {
             left: 300px;
           }
-          .cardBox {
-            grid-template-columns: repeat(2, 1fr);
-          }
         }
-   
-        .chart-container {
-            position: relative;
-            top: 15px;
-            left: 20px;
-            width: 42.5vw;
-            height: 30vh;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            padding: 5px;
-            overflow: auto; /* Adicione o overflow para permitir rolagem */
-            min-height: 100px; /* Altura mínima para garantir visibilidade */
-          }
           
           .circle-logo {
             width: 80px; /* Largura do círculo branco */
@@ -330,92 +255,146 @@
             align-items: center;
         }
 
+
+.navigation {
+    width: 300px;
+    /* outros estilos... */
+    transition: width 0.5s;
+}
+
+/* Sidebar recolhida */
+.navigation.collapsed {
+    width: 80px; /* Largura apenas para ícones */
+}
+
+/* Ajuste da logo na sidebar recolhida */
+.navigation.collapsed .dashboard-logo {
+    width: 50px; /* Tamanho da logo ajustado */
+    height: auto; /* Mantém a proporção */
+}
+
+/* Conteúdo principal (não se ajusta quando a sidebar está expandida) */
+.main {
+    transition: margin-left 0.5s;
+    margin-left: 10px; /* Espaço padrão para a sidebar expandida */
+}
+
+/* Ajuste do conteúdo principal apenas quando a sidebar está recolhida */
+.main.collapsed {
+    margin-left: -80px; /* Espaço ajustado para a sidebar recolhida */
+}
     </style>
+    {% block custom_styles %}{% endblock %}
     <link rel="stylesheet" href="assets/css/style.css">
-</head>
+  </head>
 
-<body>
-  <!-- =============== Navigation ================ -->
-  <div class="navigation">
-    <ul>
-        <!-- Adicionando a logo oficial no topo da sidebar -->
-        <li>
-            <a href="#" style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 20px; margin-bottom: 75px;">
-                <span class="icon" style="position: relative;">
-                    <img src="{% static 'Logo_Auth.png' %}" alt="Logo do Dashboard" class="dashboard-logo movable-logo" width="190" height="100" style="position: relative; top: 0; left: 0;">
-                </span>
-            </a>
-        </li>
-        
-
-        <!-- Nome de usuário com ícone de perfil -->
-        <li>
-            <a href="#">
-                <span class="icon">
-                    <ion-icon name="person-circle"></ion-icon> <!-- ícone de perfil -->
-                </span>
-                <span class="title">{{ user.username }}</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="#">
-                <span class="icon">
-                    <ion-icon name="home-outline"></ion-icon>
-                </span>
-                <span class="title">Dashboard</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <span class="icon">
-                    <ion-icon name="settings-outline"></ion-icon>
-                </span>
-                <span class="title">Configurações</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <span class="icon">
-                    <ion-icon name="log-out-outline"></ion-icon>
-                </span>
-                <span class="title">Sair</span>
-            </a>
-        </li>
-    </ul>
-  </div>
-
-        <!-- ========================= Main ==================== -->
-        <div class="main">
-            <div class="topbar">
-                <div class="toggle">
-                    <ion-icon name="menu-outline"></ion-icon>
-                </div>
-
-                <div class="user">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-arrow-narrow-left" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                    <path d="M5 12l14 0" />
-                    <path d="M5 12l4 4" />
-                    <path d="M5 12l4 -4" />
-                  </svg>
-                </div>
-                
-            </div>
-           
-
-        {% block content %}{% endblock %}
-   
-                  
+  <body>
     <!-- =========== Scripts =========  -->
     <script src="assets/js/main.js"></script>
-
+  
     <!-- ====== ionicons ======= -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-            
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 
-</body>
+    <div class="navigation">
+          <ul>
+            <!-- Adicionando a logo oficial no topo da sidebar -->
+            <li>
+              <a href="#"
+                style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 20px; margin-bottom: 75px;">
+                <span class="icon" style="position: relative;">
+                  <img src="{% static 'Logo_Auth.png' %}" alt="Logo do Dashboard"
+                    class="dashboard-logo movable-logo" width="190" height="100"
+                    style="position: relative; top: 0; left: 0;">
+                </span>
+              </a>
+            </li>
+  
+            <!-- Nome de usuário com ícone de perfil -->
+            <li>
+              <a href="#">
+                <span class="icon">
+                  <ion-icon name="person-circle"></ion-icon>
+                  <!-- ícone de perfil -->
+                </span>
+                <span class="title">{{ user.username }}</span>
+              </a>
+            </li>
+  
+            <li>
+              <a href="/api/home/">
+                <span class="icon">
+                  <ion-icon name="home-outline"></ion-icon>
+                </span>
+                <span class="title">Dashboard</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span class="icon">
+                  <ion-icon name="settings-outline"></ion-icon>
+                </span>
+                <span class="title">Configurações</span>
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <span class="icon">
+                  <ion-icon name="log-out-outline"></ion-icon>
+                </span>
+                <span class="title">Sair</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+  
+          <!-- ========================= Main ==================== -->
+          <div class="main">
+              <div class="topbar">
+                  <div class="toggle">
+                      <ion-icon name="menu-outline"></ion-icon>
+                  </div>   
+                  <a href="/api/home/" class="back-icon">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                  </a>
 
-</html>
+              </div>
+              
+  
+          
+          <script>
+            document.addEventListener('DOMContentLoaded', function() {
+            const toggleButton = document.querySelector('.toggle');
+            const navigation = document.querySelector('.navigation');
+            const mainContent = document.querySelector('.main');
+            const logoImage = document.querySelector('.dashboard-logo');
+  
+            toggleButton.addEventListener('click', function() {
+                navigation.classList.toggle('collapsed');
+  
+                // Alterna o layout principal com base no estado da sidebar
+                if (navigation.classList.contains('collapsed')) {
+                    logoImage.src = '{% static "Logo_Auth_to_sideBar.png" %}'; // Caminho para a logo menor
+                    mainContent.classList.add('collapsed');
+                } else {
+                    logoImage.src = '{% static "Logo_Auth.png" %}'; // Caminho para a logo padrão
+                    mainContent.classList.remove('collapsed');
+                }
+            });
+        });
+      
+          </script>
+             
+  
+          {% block content %}{% endblock %}
+     
+                    
+      
+              
+  
+  </body>
+  
+  </html>
+           

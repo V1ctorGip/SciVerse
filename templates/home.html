@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -220,148 +220,144 @@
         
         /* ======================= Cards ====================== */
         .cardBox {
-          position: relative;
-          width: 100%;
-          padding: 20px;
-          display: grid;
-          grid-template-columns: repeat(4, 1fr); /* Quatro cartões por linha por padrão */
-          grid-gap: 30px;
-        }
-        
-        .cardBox .card {
-          background: var(--white);
-          padding: 30px;
-          border-radius: 20px;
-          display: flex;
-          justify-content: space-between;
-          align-items: center; /* Adicionado para alinhar itens verticalmente */
-          cursor: pointer;
-          box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
-          border: 1px solid #2a2185;
-        }
-        
-        .cardBox .card .numbers,
-        .cardBox .card .cardName,
-        .cardBox .card .iconBx {
-          transition: color 0.3s; /* Suavizar a transição de cores */
-        }
-        
-        .cardBox .card .numbers {
-          font-weight: 500;
-          font-size: 2.5rem;
-          color: var(--blue);
-        }
-        
-        .cardBox .card .cardName {
-          color: var(--black2);
-          font-size: 1.1rem;
-          margin-top: 5px;
-        }
-        
-        .cardBox .card .iconBx {
-          font-size: 3.5rem;
-          color: var(--black2);
-        }
-        
-        .cardBox .card:hover {
-          background: var(--blue);
-        }
-        
-        .cardBox .card:hover .numbers,
-        .cardBox .card:hover .cardName,
-        .cardBox .card:hover .iconBx {
-          color: var(--white);
-        }
-        
-        /* Responsividade */
-        @media (max-width: 1500px) {
-          .cardBox {
-            grid-template-columns: repeat(3, 1fr); /* Três cartões por linha para telas um pouco menores */
-          }
-        }
-        
-        @media (max-width: 1366px) {
-          .cardBox {
-            grid-template-columns: repeat(4, 1fr); /* Mantém quatro cartões por linha */
-          }
-        }
-        
-        @media (max-width: 768px) {
-          .cardBox {
-            grid-template-columns: 1fr; /* Um cartão por linha para telas de smartphones */
-          }
-        }
-        
-        .cardHeadersContainer {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta automaticamente o número de colunas baseado no tamanho da tela e no tamanho mínimo dos cartões */
-          grid-gap: 20px; /* Espaçamento entre os cartões */
-          margin: 10px;
-          padding: 10px;
-        }
-        
-        .cardHeader,
-        .cardHeader2,
-        .cardHeader3,
-        .cardHeader4 {
-          background-color: #fff;
-          border: 1px solid #2a2185;
-          border-radius: 5px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          padding: 5px;
-          overflow: auto;
-          min-height: 100px;
-        }
-        
-        .cardHeader h2,
-        .cardHeader2 h2,
-        .cardHeader3 h2,
-        .cardHeader4 h2 {
-          font-size: 24px;
-          font-weight: 600;
-          margin-bottom: 10px;
-          color: var(--blue);
-          text-align: center;
-        }
-        
-        .chart-container {
-          position: relative; /* 'responsive' não é um valor válido para a propriedade 'position' */
-          margin: 0 auto;
-          width: 100%; /* O gráfico ocupará todo o espaço disponível no container */
-          height: 30vh;
-          background-color: #fff;
-          border-radius: 5px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          padding: 5px;
-          overflow: auto;
-          min-height: 100px;
-        }
-        
-        /* Media queries para ajustar o layout baseado no tamanho da tela */
-        @media (max-width: 768px) {
-          .cardHeadersContainer {
-            grid-template-columns: 1fr; /* Uma coluna para telas pequenas */
-          }
-        }
-        
-        @media (min-width: 769px) and (max-width: 1024px) {
-          .cardHeadersContainer {
-            grid-template-columns: 1fr 1fr; /* Duas colunas para tablets e telas médias */
-          }
-        }
-        
-        @media (min-width: 1025px) {
-          .cardHeadersContainer {
-            grid-template-columns: 1fr 1fr; /* Duas colunas para telas maiores, ajustando-se conforme necessário */
-          }
-        }
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Quatro cartões por linha por padrão */
+  grid-gap: 30px;
+}
 
-        @media (min-width: 500px) {
-          .cardHeadersContainer {
-            grid-template-columns: 1fr 1fr; /* Duas colunas para telas maiores, ajustando-se conforme necessário */
-          }
-        }
-    
+.cardBox .card {
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Adicionado para alinhar itens verticalmente */
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid #2a2185;
+}
+
+.cardBox .card .numbers,
+.cardBox .card .cardName,
+.cardBox .card .iconBx {
+  transition: color 0.3s; /* Suavizar a transição de cores */
+}
+
+.cardBox .card .numbers {
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: var(--blue);
+}
+
+.cardBox .card .cardName {
+  color: var(--black2);
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+.cardBox .card .iconBx {
+  font-size: 3.5rem;
+  color: var(--black2);
+}
+
+.cardBox .card:hover {
+  background: var(--blue);
+}
+
+.cardBox .card:hover .numbers,
+.cardBox .card:hover .cardName,
+.cardBox .card:hover .iconBx {
+  color: var(--white);
+}
+
+/* Responsividade */
+@media (max-width: 1500px) {
+  .cardBox {
+    grid-template-columns: repeat(3, 1fr); /* Três cartões por linha para telas um pouco menores */
+  }
+}
+
+@media (max-width: 1366px) {
+  .cardBox {
+    grid-template-columns: repeat(4, 1fr); /* Dois cartões por linha para tablets e telas médias */
+  }
+}
+
+@media (max-width: 768px) {
+  .cardBox {
+    grid-template-columns: 1fr; /* Um cartão por linha para telas de smartphones */
+  }
+}
+        
+
+        .cardHeadersContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta automaticamente o número de colunas baseado no tamanho da tela e no tamanho mínimo dos cartões */
+  grid-gap: 20px; /* Espaçamento entre os cartões */
+  margin: 10px;
+  padding: 10px;
+}
+
+.cardHeader,
+.cardHeader2,
+.cardHeader3,
+.cardHeader4 {
+  background-color: #fff;
+  border: 1px solid #2a2185;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  overflow: auto;
+  min-height: 100px;
+}
+
+.cardHeader h2,
+.cardHeader2 h2,
+.cardHeader3 h2,
+.cardHeader4 h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--blue);
+  text-align: center;
+}
+
+.chart-container {
+  position: relative; /* 'responsive' não é um valor válido para a propriedade 'position' */
+  margin: 0 auto;
+  width: 100%; /* O gráfico ocupará todo o espaço disponível no container */
+  height: 30vh;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  overflow: auto;
+  min-height: 100px;
+  margin: auto;
+}
+
+
+/* Media queries para ajustar o layout baseado no tamanho da tela */
+@media (max-width: 768px) {
+  .cardHeadersContainer {
+    grid-template-columns: 1fr; /* Uma coluna para telas pequenas */
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .cardHeadersContainer {
+    grid-template-columns: 1fr 1fr; /* Duas colunas para tablets e telas médias */
+  }
+}
+
+@media (min-width: 1025px) {
+  .cardHeadersContainer {
+    grid-template-columns: 1fr 1fr; /* Duas colunas para telas maiores, ajustando-se conforme necessário */
+  }
+}
         /* ====================== Responsive Design ========================== */
         @media (max-width: 991px) {
           .navigation {
@@ -402,338 +398,375 @@
           text-decoration: none; 
       }
 
+
+      #toggleDropdown {
+          background-color: rgb(15, 134, 21); 
+          border: none;
+          color: white;
+          padding: 10px 20px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          font-size: 12px;
+          margin: 4px 2px;
+          cursor: pointer;
+          border-radius: 8px;
+      }
+            
+
+      .dropdown-content {
+          position: absolute;
+          background-color: #f9f9f9;
+          min-width: 160px;
+          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+          z-index: 1;
+      }
+
+      .navigation {
+          width: 300px;
+          /* outros estilos... */
+          transition: width 0.5s;
+      }
+
+      /* Sidebar recolhida */
+      .navigation.collapsed {
+          width: 80px; /* Largura apenas para ícones */
+      }
+
+      /* Ajuste da logo na sidebar recolhida */
+      .navigation.collapsed .dashboard-logo {
+          width: 50px; /* Tamanho da logo ajustado */
+          height: auto; /* Mantém a proporção */
+      }
+
+      /* Conteúdo principal (não se ajusta quando a sidebar está expandida) */
+      .main {
+          transition: margin-left 0.5s;
+          margin-left: 10px; /* Espaço padrão para a sidebar expandida */
+      }
+
+      /* Ajuste do conteúdo principal apenas quando a sidebar está recolhida */
+      .main.collapsed {
+          margin-left: -80px; /* Espaço ajustado para a sidebar recolhida */
+      }
     </style>
     <link rel="stylesheet" href="assets/css/style.css">
-</head>
+  </head>
 
-<body>
+  <body>
     <!-- =============== Navigation ================ -->
     <div class="container">
-        <div class="navigation">
-            <ul>
-                <!-- Adicionando a logo oficial no topo da sidebar -->
-                <li>
-                    <a href="#" style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 20px; margin-bottom: 75px;">
-                        <span class="icon" style="position: relative;">
-                            <img src="{% static 'Logo_Auth.png' %}" alt="Logo do Dashboard" class="dashboard-logo movable-logo" width="190" height="100" style="position: relative; top: 0; left: 0;">
-                        </span>
-                    </a>
-                </li>
-                
-    
-                <!-- Nome de usuário com ícone de perfil -->
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="person-circle"></ion-icon> <!-- ícone de perfil -->
-                        </span>
-                        <span class="title">{{ user.username }}</span>
-                    </a>
-                </li>
+      <div class="navigation">
+        <ul>
+          <!-- Adicionando a logo oficial no topo da sidebar -->
+          <li>
+            <a href="#"
+              style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 20px; margin-bottom: 75px;">
+              <span class="icon" style="position: relative;">
+                <img src="{% static 'Logo_Auth.png' %}" alt="Logo do Dashboard"
+                  class="dashboard-logo movable-logo" width="190" height="100"
+                  style="position: relative; top: 0; left: 0;">
+              </span>
+            </a>
+          </li>
 
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="home-outline"></ion-icon>
-                        </span>
-                        <span class="title">Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="settings-outline"></ion-icon>
-                        </span>
-                        <span class="title">Configurações</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="icon">
-                            <ion-icon name="log-out-outline"></ion-icon>
-                        </span>
-                        <span class="title">Sair</span>
-                    </a>
-                </li>
-            </ul>
+          <!-- Nome de usuário com ícone de perfil -->
+          <li>
+            <a href="{% url 'perfil' %}">
+              <span class="icon">
+                <ion-icon name="person-circle"></ion-icon>
+                <!-- ícone de perfil -->
+              </span>
+              <span class="title">{{ user.username }}</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#">
+              <span class="icon">
+                <ion-icon name="home-outline"></ion-icon>
+              </span>
+              <span class="title">Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="icon">
+                <ion-icon name="settings-outline"></ion-icon>
+              </span>
+              <span class="title">Configurações</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="icon">
+                <ion-icon name="log-out-outline"></ion-icon>
+              </span>
+              <span class="title">Sair</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- ========================= Main ==================== -->
+      <div class="main">
+        <div class="topbar">
+          <div class="toggle">
+            <ion-icon name="menu-outline"></ion-icon>
+          </div>
+
         </div>
 
-        <!-- ========================= Main ==================== -->
-        <div class="main">
-            <div class="topbar">
-                <div class="toggle">
-                    <ion-icon name="menu-outline"></ion-icon>
-                </div>
-              
-            </div>
-           
-            <!-- ======================= Cards ================== -->
-            <div class="cardBox">
-              <div class="card" id="orientadoresCard">
-                <div>
-                    <div class="numbers">{{ distinct_orientadores_count }}</div>
-                    <div class="cardName">Número de orientadores</div>
-                </div>
-            
-                <div class="iconBx">
-                  <ion-icon name="people-circle-outline"></ion-icon>
-                </div>
-            </div>
-            
-            
-
-                <div class="card">
-                    <div>
-                        <div class="numbers">TOP 3</div>
-                        <div class="cardName">Ranking de orientações</div>
-                    </div>
-
-                    <div class="iconBx">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-crown" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FFD700" fill="#FFD700" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z" />
-                        </svg>
-                    </div>
-                </div>
-
-                <a href="{% url 'lista_de_publicacoes' %}"class="cardLink">
-                  <div class="card">
-                      <div>
-                          <div class="numbers">{{ total_publicacoes }}</div>
-                          <div class="cardName">Quantidade de publicações</div>
-                      </div>
-              
-                      <div class="iconBx">
-                          <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-article-filled-filled" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                              <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                              <path d="M19 3a3 3 0 0 1 2.995 2.824l.005 .176v12a3 3 0 0 1 -2.824 2.995l-.176 .005h-14a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-12a3 3 0 0 1 2.824 -2.995l.176 -.005h14zm-2 12h-10l-.117 .007a1 1 0 0 0 0 1.986l.117 .007h10l.117 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm0 -4h-10l-.117 .007a1 1 0 0 0 0 1.986l.117 .007h10l.117 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm0 -4h-10l-.117 .007a1 1 0 0 0 0 1.986l.117 .007h10l.117 -.007a1 1 0 0 0 0 -1.986l-.117 -.007z" stroke-width="0" fill="currentColor" />
-                          </svg>
-                      </div>
-                  </div>
-              </a>
-              
-
-                <div class="card">
-                    <div>
-                        <div class="numbers">7.400</div>
-                        <div class="cardName">Quantidade de Palavras-chave</div>
-                    </div>
-
-                    <div class="iconBx">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-circle-key" width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M14 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                            <path d="M21 12a9 9 0 1 1 -18 0a9 9 0 0 1 18 0z" />
-                            <path d="M12.5 11.5l-4 4l1.5 1.5" />
-                            <path d="M12 15l-1.5 -1.5" />
-                        </svg>
-                    </div>
-                    
-                    
-                </div>
+        <!-- ======================= Cards ================== -->
+        <div class="cardBox">
+          <div class="card" id="orientadoresCard">
+            <div>
+              <div class="numbers">{{ distinct_orientadores_count }}</div>
+              <div class="cardName">Número de orientadores</div>
             </div>
 
-            <div class="cardHeadersContainer">
-              <div class="cardHeader">
-                  <h2>Distribuição de Títulos por Ano</h2>
-                  <div class="chart-container">
-                      <canvas id="myChart"></canvas>
-                  </div>
-              </div>    
-          
-              <div class="cardHeader2">
-                <h2>Distribuição de Títulos por Curso</h2>
-                <div class="chart-container">
-                    <canvas id="courseDistributionChart"></canvas>
-                </div>
+            <div class="iconBx">
+              <ion-icon name="people-circle-outline"></ion-icon>
+            </div>
+          </div>
+
+          <div class="card">
+            <div>
+              <div class="numbers">TOP 3</div>
+              <div class="cardName">Ranking de orientações</div>
+            </div>
+
+            <div class="iconBx">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-tabler icon-tabler-crown" width="44"
+                height="44" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="#FFD700" fill="#FFD700" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z" />
+              </svg>
+            </div>
+          </div>
+
+          <a href="{% url 'lista_de_publicacoes' %}" class="cardLink">
+            <div class="card">
+              <div>
+                <div class="numbers">{{ total_publicacoes }}</div>
+                <div class="cardName">Quantidade de publicações</div>
               </div>
 
-              <div class="cardHeader3">
-                <h2>Distribuição 3</h2>
-                <div class="chart-container">
-                  <canvas id="radarChart"></canvas>
-                </div>
+              <div class="iconBx">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="icon icon-tabler icon-tabler-article-filled-filled"
+                  width="44" height="44" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="currentColor" fill="none" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path
+                    d="M19 3a3 3 0 0 1 2.995 2.824l.005 .176v12a3 3 0 0 1 -2.824 2.995l-.176 .005h-14a3 3 0 0 1 -2.995 -2.824l-.005 -.176v-12a3 3 0 0 1 2.824 -2.995l.176 -.005h14zm-2 12h-10l-.117 .007a1 1 0 0 0 0 1.986l.117 .007h10l.117 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm0 -4h-10l-.117 .007a1 1 0 0 0 0 1.986l.117 .007h10l.117 -.007a1 1 0 0 0 0 -1.986l-.117 -.007zm0 -4h-10l-.117 .007a1 1 0 0 0 0 1.986l.117 .007h10l.117 -.007a1 1 0 0 0 0 -1.986l-.117 -.007z"
+                    stroke-width="0" fill="currentColor" />
+                </svg>
               </div>
-              
-              <div class="cardHeader4">
-                <h2>Distribuição 4</h2>
-                <div class="chart-container">
-                  <canvas id="barChart"></canvas>
-                </div>
-              </div>
+            </div>
+          </a>
 
+          <div class="card">
+            <div>
+              <div class="numbers">7.400</div>
+              <div class="cardName">Quantidade de Palavras-chave</div>
+            </div>
+
+            <div class="iconBx">
+              <svg xmlns="http://www.w3.org/2000/svg"
+                class="icon icon-tabler icon-tabler-circle-key" width="44"
+                height="44" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" fill="none" stroke-linecap="round"
+                stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M14 10m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                <path d="M21 12a9 9 0 1 1 -18 0a9 9 0 0 1 18 0z" />
+                <path d="M12.5 11.5l-4 4l1.5 1.5" />
+                <path d="M12 15l-1.5 -1.5" />
+              </svg>
+            </div>
 
           </div>
-    <script>
+        </div>
+
+        <div class="cardHeadersContainer">
+          <div class="cardHeader">
+            <h2>Distribuição de Títulos por Ano</h2>
+            <div class="chart-container">
+              <canvas id="myChart1"></canvas>
+            </div>
+          </div>
+
+          <div class="cardHeader2">
+            <h2>Distribuição de Títulos por Curso</h2>
+            <button id="toggleDropdown">Selecionar Cursos</button>
+            <div id="dropdown" class="dropdown-content" style="display: none;">
+            </div>
+            <div class="chart-container">
+              <canvas id="myChart2"></canvas>
+            </div>
+          </div>
+
+          <div class="cardHeader3">
+            <h2>Distribuição 3</h2>
+            <div class="chart-container">
+              <canvas id="myChart3"></canvas>
+            </div>
+          </div>
+
+          <div class="cardHeader4">
+            <h2>Distribuição 4</h2>
+            <div class="chart-container">
+              <canvas id="myChart4"></canvas>
+            </div>
+          </div>
+
+        </div>
+        <script>
               document.getElementById("orientadoresCard").addEventListener("click", function() {
                   window.location.href = "{% url 'lista_orientadores' %}";
               });
-    </script>                    
-    <!-- =========== Scripts =========  -->
-    <script src="assets/js/main.js"></script>
+    </script>
+        <!-- =========== Scripts =========  -->
+        <script src="assets/js/main.js"></script>
 
-    <!-- ====== ionicons ======= -->
-    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <!-- ====== ionicons ======= -->
+        <script type="module"
+          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule
+          src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-        // Dados fictícios de títulos produzidos por ano
-        var data = {
-            labels: ['2015', '2016', '2017', '2018', '2019', '2020', '2021'],
-            datasets: [{
-                label: 'Quantidade de Títulos',
-                data: [12, 18, 25, 20, 30, 28, 35],
-                borderColor: 'rgba(54, 162, 235, 1)', // Cor da linha
-                borderWidth: 2, // Largura da linha
-                fill: false, // Preenchimento desativado para uma linha
-            }]
-        };
+        <script>
+  document.addEventListener('DOMContentLoaded', function() {
+        let chart;
+        let mapeamentoNomesCursos = {}; // Objeto para mapear nomes abreviados para completos
     
-        var ctx = document.getElementById('myChart').getContext('2d');
+        function abreviarNomeCurso(nomeCurso, index) {
+            const maxComprimento = 15;
+            let nomeAbreviado = nomeCurso.length > maxComprimento ? nomeCurso.substring(0, maxComprimento - 3) + '...' : nomeCurso;
+            
+            // Usando o índice apenas internamente para o mapeamento
+            let nomeChave = `${nomeAbreviado}_${index}`;
+            mapeamentoNomesCursos[nomeChave] = nomeCurso;
+            return nomeAbreviado; // Retorna apenas o nome abreviado sem o índice
+        }
     
-        var myChart = new Chart(ctx, {
-            type: 'line',
-            data: data,
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                scales: {
-                    x: {
-                        beginAtZero: true
+        fetch('/api/producao-cientifica/por-curso/')
+        .then(response => response.json())
+        .then(dados => {
+            const dropdown = document.getElementById('dropdown');
+            const cursos = Object.keys(dados);
+    
+            cursos.forEach((curso, index) => {
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.id = curso;
+                checkbox.checked = true;
+                checkbox.onchange = () => atualizarGrafico();
+    
+                const label = document.createElement('label');
+                label.htmlFor = curso;
+                label.textContent = curso; // Usa o nome completo do curso para o label
+    
+                const div = document.createElement('div');
+                div.appendChild(checkbox);
+                div.appendChild(label);
+                dropdown.appendChild(div);
+            });
+    
+            const ctx = document.getElementById('myChart2').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: {},
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed.y !== null) {
+                                        label += context.parsed.y;
+                                    }
+                                    return label;
+                                },
+                                title: function(tooltipItems) {
+                                    let chaveNomeCurso = tooltipItems[0].label + '_' + tooltipItems[0].dataIndex;
+                                    return mapeamentoNomesCursos[chaveNomeCurso];
+                                }
+                            }
+                        }
                     },
-                    y: {
-                        beginAtZero: true
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false // Oculta a legenda
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1 // Ajusta a escala para incrementos de 1
+                            }
+                        }
                     }
                 }
+            });
+    
+            function atualizarGrafico() {
+                const selecionados = cursos.filter(curso => document.getElementById(curso).checked);
+                const dadosFiltrados = selecionados.map(curso => dados[curso]);
+                const labelsAbreviados = selecionados.map((curso, index) => abreviarNomeCurso(curso, index));
+    
+                chart.data = {
+                    labels: labelsAbreviados,
+                    datasets: [{
+                        label: 'Número de Produções',
+                        data: dadosFiltrados,
+                        backgroundColor: selecionados.map((_, index) => `hsl(${index * 360 / selecionados.length}, 70%, 50%)`)
+                    }]
+                };
+                chart.update();
             }
+    
+            atualizarGrafico();
         });
-
-        // Dados fictícios para o gráfico de pizza
-        var donutData = {
-          labels: ['Curso A', 'Curso B', 'Curso C', 'Curso D'],
-          datasets: [{
-              data: [10, 20, 30, 40], // Quantidade de títulos por curso
-              backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'], // Cores anteriores
-              hoverBackgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0'], // Cores ao passar o mouse
-              borderWidth: 1, // Espessura da borda
-              borderColor: '#FFFFFF' // Cor da borda
-          }]
-      };
-      
-      var donutCtx = document.getElementById('courseDistributionChart').getContext('2d');
-      
-      var courseDonutChart = new Chart(donutCtx, {
-          type: 'doughnut',
-          data: donutData,
-          options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              legend: {
-                  display: false, // Oculta a legenda para um visual mais limpo
-              },
-              cutoutPercentage: 70, // Define a espessura do donut
-              elements: {
-                  arc: {
-                      borderWidth: 0 // Remove a borda entre os segmentos
-                  }
-              }
-          }
-      });
-      
-      const radarData = {
-        labels: [
-          'Eating',
-          'Drinking',
-          'Sleeping',
-          'Designing',
-          'Coding',
-          'Cycling',
-          'Running'
-        ],
-        datasets: [{
-          label: 'My First Dataset',
-          data: [65, 59, 90, 81, 56, 55, 40],
-          fill: true,
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          borderColor: 'rgb(255, 99, 132)',
-          pointBackgroundColor: 'rgb(255, 99, 132)',
-          pointBorderColor: '#fff',
-          pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgb(255, 99, 132)'
-        }]
-      };
-      
-      const radarOptions = {
-        responsive: true, // Garante que o gráfico seja responsivo
-        maintainAspectRatio: false, // Remove a manutenção da proporção de aspecto para permitir o preenchimento completo
-        // outras opções...
-      };
-      
-      // Dados e opções para o gráfico de barras
-      const barData = {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [{
-          label: 'My First Dataset',
-          data: [65, 59, 80, 81, 56, 55, 40],
-          backgroundColor: [
-            'rgba(255, 99, 132, 0.2)',
-            'rgba(54, 162, 235, 0.2)',
-            'rgba(255, 206, 86, 0.2)',
-            'rgba(75, 192, 192, 0.2)',
-            'rgba(153, 102, 255, 0.2)',
-            'rgba(255, 159, 64, 0.2)',
-            'rgba(199, 199, 199, 0.2)'
-          ],
-          borderColor: [
-            'rgba(255, 99, 132, 1)',
-            'rgba(54, 162, 235, 1)',
-            'rgba(255, 206, 86, 1)',
-            'rgba(75, 192, 192, 1)',
-            'rgba(153, 102, 255, 1)',
-            'rgba(255, 159, 64, 1)',
-            'rgba(159, 159, 159, 1)'
-          ],
-          borderWidth: 1
-        }]
-      };
-      
-      const barOptions = {
-        responsive: true, // Garante que o gráfico seja responsivo
-        maintainAspectRatio: false, // Remove a manutenção da proporção de aspecto para permitir o preenchimento completo
-        // Configurações dos eixos e outras opções...
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: true,
-            },
-          }],
-          xAxes: [{
-            // configurações para o eixo x
-          }],
-        },
-      };
-      
-      // Criar o gráfico de radar
-      new Chart(document.getElementById('radarChart'), {
-        type: 'radar',
-        data: radarData,
-        options: radarOptions
-      });
-      
-      // Criar o gráfico de barras
-      new Chart(document.getElementById('barChart'), {
-        type: 'bar',
-        data: barData,
-        options: barOptions
-      });
+    
+        document.getElementById('toggleDropdown').onclick = () => {
+            const dropdown = document.getElementById('dropdown');
+            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+        };
+    });
 
 
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const toggleButton = document.querySelector('.toggle');
+    const navigation = document.querySelector('.navigation');
+    const mainContent = document.querySelector('.main');
+    const logoImage = document.querySelector('.dashboard-logo');
+
+    toggleButton.addEventListener('click', function() {
+        navigation.classList.toggle('collapsed');
+
+        // Alterna o layout principal com base no estado da sidebar
+        if (navigation.classList.contains('collapsed')) {
+            logoImage.src = '{% static "Logo_Auth_to_sideBar.png" %}'; // Caminho para a logo menor
+            mainContent.classList.add('collapsed');
+        } else {
+            logoImage.src = '{% static "Logo_Auth.png" %}'; // Caminho para a logo padrão
+            mainContent.classList.remove('collapsed');
+        }
+    });
+});
     </script>
 
-  </body>
-</html>
+      </body>
+    </html>
+           

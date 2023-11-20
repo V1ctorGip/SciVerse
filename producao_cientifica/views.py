@@ -1,5 +1,9 @@
 from django.shortcuts import render
 from django.db.models import Q, Value
+from django.db.models import Count
+from collections import Counter
+import json
+from collections import defaultdict
 from django.db.models.functions import Concat
 from .models import ProducaoCientifica, Autor 
 from .models import Person
@@ -128,3 +132,11 @@ def lista_de_publicacoes(request):
 
 
 
+def producao_cientifica_por_curso(request):
+    # Contar as produções por curso
+    contador_cursos = ProducaoCientifica.objects.values('nome_do_curso').annotate(total=Count('id')).order_by('nome_do_curso')
+
+    # Converter o QuerySet em um dicionário para o JsonResponse
+    dados = {item['nome_do_curso']: item['total'] for item in contador_cursos}
+
+    return JsonResponse(dados)

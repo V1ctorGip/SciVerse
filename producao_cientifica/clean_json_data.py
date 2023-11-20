@@ -27,6 +27,6 @@ def clean_json_file(filename):
         json.dump(data, file, ensure_ascii=False, indent=4)
 
 if __name__ == "__main__":
-    json_filename = 'dados_normalizados_consolidados.json'
+    json_filename = 'dados_biblioteca.json'
     clean_json_file(json_filename)
     print(f"Entidades HTML no arquivo {json_filename} foram desescapadas com sucesso!")

@@ -1,0 +1,578 @@
+{% extends "template.html" %}
+
+{% block custom_styles %}
+<style>
+.main-body {
+  padding: 15px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.profile-card {
+  text-align: center;
+  margin-bottom: 20px; /* Espaçamento entre os containers */
+  width: 100%; /* Aumenta a largura para preencher mais espaço na tela */
+  max-width: 1200px; /* Largura máxima do container aumentada, se necessário */
+  box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+  border-radius: .25rem;
+  background-color: #fff;
+  padding: 40px; /* Aumenta o espaçamento interno para aumentar a altura */
+  margin: 40px auto; /* Aumenta a margem superior e inferior para centralização vertical */
+}
+
+.profile-body {
+  margin-bottom: 20px;
+  padding: 36px; /* Aumenta o espaçamento interno para aumentar a altura */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  background-color: #fff;
+  max-width: 1200px; /* Largura máxima do container aumentada, se necessário */
+  width: 100%; /* Aumenta a largura para preencher mais espaço na tela */
+}
+
+.profile-card img {
+  border-radius: 50%; /* Torna a imagem circular */
+  padding: 5px; /* Espaçamento entre a imagem e a borda circular */
+  background-color: #1DA1F2; /* Fundo azul para a borda circular */
+  border: 3px solid rgb(255, 255, 255); /* Borda branca ao redor da imagem */
+  margin-top: center; /* Ajuste conforme necessário para alinhar corretamente com o topo do cartão */
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.1); /* Sombra ao redor da imagem */
+}
+
+.profile-card .name {
+  font-size: 22px;
+  color: #333333;
+  margin-top: 10px;
+}
+
+.profile-card .title {
+  font-size: 16px;
+  color: #777777;
+  margin-top: 5px;
+}
+
+.profile-card .location {
+  font-size: 14px;
+  color: #777777;
+  margin-top: 5px;
+}
+
+.profile-card .button {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.profile-card .button2 {
+  display: inline-block;
+  margin-top: 15px;
+  padding: 10px 20px;
+  margin-right: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #0dac18;
+  color: rgb(255, 255, 255);
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.profile-card .button:last-child {
+  margin-right: 0;
+}
+
+.profile-card .button:hover {
+  background-color: #0056b3;
+}
+
+.profile-card .button:not(:last-child) {
+  margin-right: 10px;
+}
+
+
+.list-group-item {
+  display: flex;
+  padding: 15px 100px;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eeeeee; /* linha divisória */
+
+}
+
+.list-group-item:last-child {
+  border-bottom: 0;
+/* remove a borda do último item */
+}
+
+.list-group-item svg {
+  margin-right: 10px;
+}
+
+/* Se os ícones SVG estiverem em linha, você pode direcioná-los diretamente */
+.icon-inline {
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+/* ou se os ícones forem de uma fonte de ícones, como FontAwesome,
+você deve incluir a classe apropriada aqui, por exemplo: */
+.fa-icon {
+  margin-right: 8px;
+}
+
+.text-secondary {
+  color: #6c757d;
+  padding-left: 20px; /* Cor cinza para o texto */
+}
+
+/* Cores personalizadas para os ícones das redes sociais */
+.text-info { /* Twitter */
+  color: #1DA1F2;
+}
+
+.text-danger { /* Instagram */
+  color: #E1306C;
+}
+
+.text-primary { /* Facebook */
+  color: #3B5998;
+}
+
+/* Estilo para o h6 que contém o ícone e o texto */
+h6 {
+  align-items: center;
+  font-size: 14px;/* Ajuste conforme necessário */
+}
+
+
+.row {
+  flex-wrap: wrap;
+}
+
+.col-sm-3 {
+  width: 50%; /* coluna para o título do campo */
+  padding-right: 5px;
+  padding-left: 20px;
+  font-weight: bold; /* texto em negrito */
+}
+
+.col-sm-9 {
+  width: 50%; /* coluna para o valor do campo */
+  padding-right: 20px;
+  padding-left: 20px;
+  text-align: left; /* alinhamento do texto à esquerda */
+  color: #666; /* cor de texto mais clara */
+}
+
+  .col-md-8,
+  .col-md-4 {
+    padding: 1rem; /* Espaçamento interno para as colunas */
+  }
+
+
+hr {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  border: 0;
+  border-top: 1px solid #eee; /* linha cinza clara */
+}
+
+.text-secondary {
+  color: #6c757d; /* cor cinza para texto secundário */
+}
+
+
+.edit-btn:hover {
+  background-color: #0056b3; /* cor de fundo mais escura quando passa o mouse */
+}
+
+
+.profile-body:first-child {
+  margin-top: 20px; /* Espaçamento no topo do primeiro container */
+}
+
+.profile-body:last-child {
+  margin-bottom: 20px; /* Espaçamento na base do último container */
+}
+
+.profile-body h5 {
+  color: #333; /* Cor do texto para o cabeçalho */
+  margin-bottom: 20px; /* Espaçamento após o cabeçalho */
+}
+
+.profile-body p {
+  color: #333; /* Cor do texto para os parágrafos/nomes dos projetos */
+  font-size: 1rem; /* Tamanho da fonte */
+  margin-bottom: .5rem; /* Espaçamento antes da barra de progresso */
+}
+
+.progress {
+  background-color: #e9ecef; /* Cor de fundo para a barra de progresso */
+  border-radius: .25rem; /* Bordas arredondadas para a barra de progresso */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .1); /* Sombra interna para dar efeito de profundidade */
+  margin-bottom: 1rem; /* Espaçamento após a barra de progresso */
+  overflow: hidden; /* Garante que as barras filhas não saiam do container */
+  height: 5px; /* Altura da barra de progresso */
+}
+
+.progress-bar {
+  display: block; /* Faz com que a barra de progresso seja um bloco para preencher a largura */
+  width: 100%; /* Largura total fixa para desconsiderar o progresso dinâmico */
+  background-color: #ddd; /* Cor da barra de progresso */
+  height: 5px; /* Altura completa da barra de progresso */
+}
+
+.profile-label {
+    margin-bottom: 10px; /* Adicione espaço entre os rótulos */
+  }
+
+/* Cores específicas para as barras de progresso. Estas podem ser alteradas conforme necessário. */
+.bg-primary {
+  background-color: #007bff;
+}
+
+.bg-success {
+  background-color: #28a745;
+}
+
+.bg-info {
+  background-color: #17a2b8;
+}
+
+.bg-warning {
+  background-color: #ffc107;
+}
+
+.bg-danger {
+  background-color: #dc3545;
+}
+
+
+/* Estilo para os rótulos, como "Full Name", "Email", etc. */
+.profile-label h6 {
+  white-space: nowrap;
+  padding: auto;
+  font-weight: smaller; /* Texto em negrito */
+  margin-right: 250px;
+}
+
+/* Estilo para as informações secundárias, como nomes e detalhes de contato */
+.text-secondary {
+  color: #555; /* Cor do texto secundário */
+}
+
+/* Estilo para a linha horizontal (hr) */
+hr {
+  border-top: 1px solid #ddd; /* Cor da linha horizontal */
+  margin-top: 10px; /* Espaçamento superior */
+  margin-bottom: 10px; /* Espaçamento inferior */
+}
+
+/* Estilo para o botão "Edit" ao passar o mouse */
+.btn-info:hover {
+  background-color: #0056b3; /* Cor de fundo ao passar o mouse */
+}
+
+.horizontal-spacing {
+    padding: auto;
+    margin-right: 300px; /* Ajuste o valor conforme necessário */
+}
+
+.profile-body .row {
+    margin-bottom: 5px; /* Space between items */
+  }
+
+  .profile-body .row .col-sm-3 {
+    font-weight: bold; /* Bold for the title */
+    padding-left: 0; /* Remove padding if needed */
+  }
+
+  .profile-body .row .col-sm-9 {
+    text-align: right; /* Align the text to the right */
+    padding-left: 5px;
+    padding-right: 0; /* Remove padding if needed */
+  }
+
+.row.mb-3 {
+  margin-bottom: 10px; /* Ajuste o valor para corresponder ao espaçamento vertical desejado */
+  align-items: center; /* Alinha os itens verticalmente ao centro */
+}
+
+
+.main-body .row {
+  display: flex;
+  justify-content: center; /* Centraliza as colunas */
+}
+
+/* Adicione margem ao primeiro e último elemento, se necessário */
+.profile-card:first-child, .profile-body:first-child {
+  margin-top: 40px;
+}
+
+.profile-card:last-child, .profile-body:last-child {
+  margin-bottom: 40px;
+}
+
+.btn-info {
+  background-color: #17a2b8; /* Cor de fundo azul */
+  color: #ffffff; /* Cor do texto branco */
+  font-weight: bold; /* Texto em negrito */
+  padding: 8px 16px; /* Espaçamento interno: 8px na vertical e 16px na horizontal */
+  font-size: 14px; /* Tamanho da fonte */
+  border: none; /* Sem borda */
+  border-radius: 4px; /* Bordas arredondadas ligeiramente */
+  cursor: pointer; /* Cursor do tipo ponteiro indicando que é clicável */
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2); /* Sombra leve para dar profundidade */
+  transition: background-color 0.3s ease; /* Animação suave para mudança de cor de fundo */
+}
+
+.edit-button-container {
+  text-align: right; /* Alinha o conteúdo à direita */
+  padding: 10px 0; /* Espaçamento superior e inferior para o container */
+}
+
+.profile-card .button:hover,
+.edit-btn:hover {
+  background-color: #0056b3;
+}
+
+.profile-card .button2:hover,
+.edit-btn:hover {
+  background-color: #39c742;
+}
+
+.bio-textarea {
+  width: 100%; /* Ocupa toda a largura do container */
+  border: 1px solid #ddd; /* Borda sutil */
+  border-radius: 4px; /* Bordas arredondadas para um visual moderno */
+  padding: 8px; /* Espaçamento interno para um texto mais legível */
+  font-size: 14px; /* Tamanho de fonte adequado */
+  color: #333; /* Cor de fonte sóbria */
+  background-color: #fff; /* Cor de fundo suave */
+  resize: none; /* Desabilita redimensionamento */
+  box-shadow: none; /* Sem sombra para manter minimalismo */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Transição suave para foco */
+}
+
+.bio-textarea:focus {
+  border-color: #007bff; /* Cor da borda ao focar */
+  box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25); /* Sombra sutil ao focar */
+}
+
+.bio-textarea:disabled {
+  background-color: #e9ecef; /* Fundo cinza quando desabilitado */
+  opacity: 0.7; /* Leve transparência quando desabilitado */
+  cursor: not-allowed; /* Cursor de 'não permitido' */
+}
+
+@media (min-width: 768px) {
+  .row {
+    display: flex;
+    justify-content: space-between; /* Espaçamento entre os cartões */
+  }
+}
+
+</style>
+{% endblock custom_styles %}
+
+{% block content %}
+<div class="container">
+  <div class="main-body">
+    <div class="row">
+      <!-- Profile Card Section -->
+      <div class="col-md-4">
+        <!-- Personal Information Card -->
+        <div class="profile-card">
+          <div class="d-flex flex-column align-items-center text-center">
+              {% if user.userprofile.profile_picture %}
+                  <img src="{{ user.userprofile.profile_picture.url }}" alt="{{ user.username }}" class="rounded-circle" width="150">
+              {% else %}
+                  <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Default Profile" class="rounded-circle" width="150">
+              {% endif %}
+              <div class="mt-3">
+                  <h4>{{ user.username }}</h4>
+                  <p class="text-muted font-size-sm">
+                      <textarea id="bio-text" class="bio-textarea" disabled>{{ user.userprofile.bio }}</textarea>
+                  </p>
+                  <button class="button" onclick="enableEditing()">Editar</button>
+                  <button class="button2" id="save-button" disabled>Salvar</button>
+                  <form method="POST" enctype="multipart/form-data" id="profile-form" style="display:none;">
+                      {% csrf_token %}
+                      {{ form.profile_picture }}
+                      <textarea name="bio" id="bio-form-text" style="display:none;"></textarea>
+                      <input type="submit" value="Salvar" />
+                  </form>
+              </div>
+          </div>
+      </div>
+        
+        <!-- Social Links Card -->
+        <div class="profile-card">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+              <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-globe mr-2 icon-inline"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>Website</h6>
+              <span class="text-secondary">https://bootdey.com</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+              <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-github mr-2 icon-inline"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>Github</h6>
+              <span class="text-secondary">bootdey</span>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center flex-wrap">
+              <h6 class="mb-0"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-instagram mr-2 icon-inline text-danger"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>Instagram</h6>
+              <span class="text-secondary">bootdey</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Profile Information Section -->
+      <div class="col-md-8">
+        <!-- User Information -->
+        <div class="profile-body">
+            <!-- Full Name -->
+            <div class="row mb-3">
+                <div class="col-sm-3 profile-label">
+                    <h6 class="mb-3">Nome Completo</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <input type="text" id="full-name" class="form-control" value="{{ user.userprofile.full_name }}" disabled>
+                </div>
+            </div>
+            <hr>
+            <!-- Email -->
+            <div class="row mb-3">
+                <div class="col-sm-3 profile-label">
+                    <h6 class="mb-0">Email</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <input type="email" id="email" class="form-control" value="{{ user.userprofile.email }}" disabled>
+                </div>
+            </div>
+            <hr>
+            <!-- Telefone -->
+            <div class="row mb-3">
+                <div class="col-sm-3 profile-label">
+                    <h6 class="mb-0">Telefone</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <input type="text" id="phone" class="form-control" value="{{ user.userprofile.phone }}" disabled>
+                </div>
+            </div>
+            <hr>
+            <!-- Curso -->
+            <div class="row mb-3">
+                <div class="col-sm-3 profile-label">
+                    <h6 class="mb-0">Curso</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                    <input type="text" id="course" class="form-control" value="{{ user.userprofile.course }}" disabled>
+                </div>
+            </div>
+            <hr>
+        </div>
+
+
+
+        <!-- Project Status Section -->
+        <div class="profile-body">
+          <h5 class="d-flex align-items-center mb-3">Habilidades</h5>
+          <p>Comunicação</p>
+          <div class="progress mb-3" style="height: 5px">
+              <div class="progress-bar bg-primary" role="progressbar" style="width: 30%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <p>Trabalho em equipe</p>
+          <div class="progress mb-3" style="height: 5px">
+              <div class="progress-bar bg-danger" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <p>Desenvolvedor Front</p>
+          <div class="progress mb-3" style="height: 5px">
+              <div class="progress-bar bg-success" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <p>Desenvolvedor Back</p>
+          <div class="progress mb-3" style="height: 5px">
+              <div class="progress-bar bg-warning" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <p>Full Stack</p>
+          <div class="progress" style="height: 5px">
+              <div class="progress-bar bg-info" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <script>
+    function enableEditing() {
+      var bioText = document.getElementById('bio-text');
+      var saveButton = document.getElementById('save-button');
+      bioText.disabled = false;
+      saveButton.disabled = false;
+    }
+  
+    document.getElementById('save-button').addEventListener('click', function() {
+      var bioText = document.getElementById('bio-text').value;
+      var bioFormText = document.getElementById('bio-form-text');
+      bioFormText.value = bioText;
+      document.getElementById('profile-form').submit();
+    });
+  
+    document.getElementById('profile-form').addEventListener('submit', function(event) {
+      event.preventDefault(); 
+      
+      alert("Informações salvas com sucesso!");
+      setTimeout(function(){ alert.style.display = 'none'; }, 2000);
+  
+      // Desabilita a bio e o botão salvar após salvar
+      document.getElementById('bio-text').disabled = true;
+      document.getElementById('save-button').disabled = true;
+    });
+
+  </script>
+
+
+  <script>
+    function enableEditing() {
+        // Habilita a edição para todos os campos
+        document.getElementById('full-name').disabled = false;
+        document.getElementById('email').disabled = false;
+        document.getElementById('phone').disabled = false;
+        document.getElementById('course').disabled = false;
+        document.getElementById('save-button').disabled = false;
+    }
+
+    document.getElementById('save-button').addEventListener('click', function() {
+        // Coleta os valores dos campos
+        var fullName = document.getElementById('full-name').value;
+        var email = document.getElementById('email').value;
+        var phone = document.getElementById('phone').value;
+        var course = document.getElementById('course').value;
+
+        // Atualiza os valores nos campos ocultos do formulário
+        document.getElementById('full-name-form').value = fullName;
+        document.getElementById('email-form').value = email;
+        document.getElementById('phone-form').value = phone;
+        document.getElementById('course-form').value = course;
+
+        // Submete o formulário
+        document.getElementById('profile-form').submit();
+    });
+
+    document.getElementById('profile-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        var formData = new FormData(this);
+
+    });
+</script>
+  
+{% endblock %}

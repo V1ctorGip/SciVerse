@@ -14,6 +14,7 @@ urlpatterns = [
     path('auth/', include('usuarios.urls')),
     path('producao/', include('producao_cientifica.urls')),
     path('publicacoes/', include('producao_cientifica.urls')),
+    path('api/', include('producao_cientifica.urls')), 
     path('', redirect_to_auth),
     
 ]
