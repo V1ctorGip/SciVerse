@@ -125,17 +125,15 @@ def ajax_search_publicacoes(request):
     if query == "":
         publicacoes = ProducaoCientifica.objects.all().order_by('id')
     else:
-        # Converta a query para int se for possível, caso contrário, use 0
-        query_as_int = int(query) if query.isdigit() else 0
         publicacoes = ProducaoCientifica.objects.filter(
             Q(titulo__icontains=query) | 
             Q(nome_do_curso__icontains=query) |
             Q(nome_orientador__icontains=query) |
             Q(autores__nome__icontains=query) |
-            Q(id=query_as_int)  # Adicione esta linha para permitir pesquisa por ID
+            Q(data_da_defesa__icontains=query) | 
+            Q(id=int(query) if query.isdigit() else 0)
         ).distinct().order_by('titulo')
 
-    # Use annotate para adicionar o nome do autor principal ao queryset
     publicacoes = publicacoes.annotate(
         nome_autor_principal=Concat(
             'autores__nome',
@@ -144,10 +142,17 @@ def ajax_search_publicacoes(request):
         )
     )
 
-    # Ajuste os nomes dos campos para corresponder ao seu modelo
-    publicacoes_list = list(publicacoes.values(
-        'id', 'titulo', 'nome_do_curso', 'nome_orientador', 'nome_autor_principal', 'link_arquivo'
-    ))
+    publicacoes_list = []
+    for publicacao in publicacoes:
+        publicacoes_list.append({
+            'id': publicacao.id,
+            'titulo': publicacao.titulo,
+            'data_da_defesa': publicacao.data_da_defesa.strftime('%d/%m/%Y') if publicacao.data_da_defesa else '',
+            'nome_do_curso': publicacao.nome_do_curso,
+            'nome_orientador': publicacao.nome_orientador,
+            'nome_autor_principal': publicacao.nome_autor_principal,
+            'link_arquivo': publicacao.link_arquivo
+        })
 
     return JsonResponse(publicacoes_list, safe=False)
 
@@ -162,22 +167,23 @@ def lista_de_publicacoes(request):
     publicacoes = []
 
     for publicacao in publicacoes_qs:
-        nome_autor_principal = get_nome_autor_principal(publicacao)  
-        
+        nome_autor_principal = get_nome_autor_principal(publicacao)
+        data_formatada = publicacao.data_da_defesa.strftime('%d/%m/%Y') if publicacao.data_da_defesa else ''
+
         publicacoes.append({
-            'Id': publicacao.id,  
-            'Titulo': publicacao.titulo,  
-            'NomeDoCurso': publicacao.nome_do_curso,  
-            'NomeOrientador': publicacao.nome_orientador,  
-            'LinkArquivo': publicacao.link_arquivo,  
-            'NomeAutorPrincipal': nome_autor_principal  
+            'Id': publicacao.id,
+            'Titulo': publicacao.titulo,
+            'DataDaDefesa': data_formatada,  
+            'NomeDoCurso': publicacao.nome_do_curso,
+            'NomeOrientador': publicacao.nome_orientador,
+            'LinkArquivo': publicacao.link_arquivo,
+            'NomeAutorPrincipal': nome_autor_principal
         })
 
     context = {
         'publicacoes': publicacoes
     }
     return render(request, 'producao_cientifica/lista_de_publicacoes.html', context)
-
 
 def producao_cientifica_por_curso(request):
     contador_cursos = ProducaoCientifica.objects.values('nome_do_curso').annotate(total=Count('id')).order_by('nome_do_curso')
