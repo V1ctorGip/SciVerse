@@ -219,7 +219,7 @@
         }
         
         /* ======================= Cards ====================== */
-        .cardBox {
+.cardBox {
   position: relative;
   width: 100%;
   padding: 20px;
@@ -293,7 +293,7 @@
 }
         
 
-        .cardHeadersContainer {
+  .cardHeadersContainer {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta automaticamente o número de colunas baseado no tamanho da tela e no tamanho mínimo dos cartões */
   grid-gap: 20px; /* Espaçamento entre os cartões */
@@ -305,13 +305,17 @@
 .cardHeader2,
 .cardHeader3,
 .cardHeader4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ajustado de space-between para flex-start */
   background-color: #fff;
   border: 1px solid #2a2185;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 5px;
   overflow: auto;
-  min-height: 100px;
+  min-height: 300px; /* Mantenha a altura mínima consistente para todos os gráficos */
+  position: relative; /* Posicionamento relativo para os botões toggleDropdown */
 }
 
 .cardHeader h2,
@@ -337,27 +341,53 @@
   overflow: auto;
   min-height: 100px;
   margin: auto;
+  margin-top: 5px;
 }
 
-
-/* Media queries para ajustar o layout baseado no tamanho da tela */
-@media (max-width: 768px) {
-  .cardHeadersContainer {
-    grid-template-columns: 1fr; /* Uma coluna para telas pequenas */
-  }
+.chart-container-mychart4 {
+  position: relative; /* 'responsive' não é um valor válido para a propriedade 'position' */
+  margin: 0 auto;
+  width: 100%; /* O gráfico ocupará todo o espaço disponível no container */
+  height: 30vh;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  overflow: auto;
+  min-height: 100px;
+  margin: auto;
+  margin-top: 5px;
+}
+.chart-container-mychart4 canvas {
+  width: 100%; /* Ajuste para largura */
+  height: calc(100% - 20px); /* Ajuste para altura, subtraindo a altura do botão */
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
-  .cardHeadersContainer {
-    grid-template-columns: 1fr 1fr; /* Duas colunas para tablets e telas médias */
-  }
-}
+      @media (max-width: 768px) {
+        .toggleDropdown {
+            padding: 5px 10px; /* Reduz o preenchimento em telas menores */
+            font-size: 10px; /* Reduz o tamanho da fonte em telas menores */
+            transform: translateY(-100%) translateX(10px); /* Ajuste para alinhar com a margem do container */
+        }
+      }
+      /* Media queries para ajustar o layout baseado no tamanho da tela */
+      @media (max-width: 768px) {
+        .cardHeadersContainer {
+          grid-template-columns: 1fr; /* Uma coluna para telas pequenas */
+        }
+      }
 
-@media (min-width: 1025px) {
-  .cardHeadersContainer {
-    grid-template-columns: 1fr 1fr; /* Duas colunas para telas maiores, ajustando-se conforme necessário */
-  }
-}
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .cardHeadersContainer {
+          grid-template-columns: 1fr 1fr; /* Duas colunas para tablets e telas médias */
+        }
+      }
+
+      @media (min-width: 1025px) {
+        .cardHeadersContainer {
+          grid-template-columns: 1fr 1fr; /* Duas colunas para telas maiores, ajustando-se conforme necessário */
+        }
+      }
         /* ====================== Responsive Design ========================== */
         @media (max-width: 991px) {
           .navigation {
@@ -379,17 +409,17 @@
           }
         }
           
-          .circle-logo {
-            width: 80px; /* Largura do círculo branco */
-            height: 80px; /* Altura do círculo branco */
-            background-color: white; /* Cor de fundo do círculo branco */
-            border-radius: 50%; /* Borda arredondada para criar o círculo */
-            display: flex;
-            justify-content: center;
-            align-items: center;
+      .circle-logo {
+          width: 80px; /* Largura do círculo branco */
+          height: 80px; /* Altura do círculo branco */
+          background-color: white; /* Cor de fundo do círculo branco */
+          border-radius: 50%; /* Borda arredondada para criar o círculo */
+          display: flex;
+          justify-content: center;
+          align-items: center;
         }
 
-        .cardLink {
+      .cardLink {
           text-decoration: none; 
           color: inherit; 
       }
@@ -399,32 +429,47 @@
       }
 
 
-      #toggleDropdown {
-          background-color: rgb(15, 134, 21); 
-          border: none;
-          color: white;
-          padding: 10px 20px;
-          text-align: center;
-          text-decoration: none;
-          display: inline-block;
-          font-size: 12px;
-          margin: 4px 2px;
-          cursor: pointer;
-          border-radius: 8px;
-      }
-            
-
-      .dropdown-content {
-          position: absolute;
-          background-color: #f9f9f9;
-          min-width: 160px;
-          box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-          z-index: 1;
+      #toggleDropdown, #toggleDropdown1, #toggleDropdown3, #toggleDropdown4 {
+        background-color: rgb(15, 134, 21);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 12px;
+        cursor: pointer;
+        border-radius: 8px;
+        position: relative; /* Posicionamento absoluto dentro do cardHeader */
+        top: 0; /* Posicionamento abaixo do título */
+        left: 0; /* Alinhamento à esquerda */
+        max-width: 180px;
       }
 
+
+      #dropdown, #dropdown1, #dropdown3, #dropdown4 {
+        display: none; /* Inicialmente oculto */
+        position: absolute; /* Posicionamento absoluto */
+        background-color: #f9f9f9;
+        max-width: 200px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 2; /* Garante que apareça acima do conteúdo da página */
+        border-radius: 8px;
+        padding: 5px;
+        top: 80px; /* Posicionamento abaixo do botão */
+        left: 10px; /* Alinhamento à esquerda com o botão */
+      }
+      
+    
+       #dropdown div, #dropdown1 div, #dropdown3 div, #dropdown4 div {
+        margin: 5px 0;
+      }
+      
+      #dropdown label, #dropdown1 label, #dropdown3 label, #dropdown4 label {
+        margin-left: 5px;
+        font-size: 14px;
+      }
       .navigation {
           width: 300px;
-          /* outros estilos... */
           transition: width 0.5s;
       }
 
@@ -449,6 +494,92 @@
       .main.collapsed {
           margin-left: -80px; /* Espaço ajustado para a sidebar recolhida */
       }
+
+      .resumo-numerico {
+        background-color: #f2f2f2; /* Cor de fundo suave */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra leve para profundidade */
+        font-weight: bold; /* Escolha uma fonte elegante */
+        color: #007bff;  /* Cor de texto escura para contraste */
+        text-align: center; /* Centraliza o texto */
+    }
+    
+    .resumo-numerico p {
+        margin: 10px 0;
+        font-size: 16px; /* Tamanho de fonte legível */
+        line-height: 1.5; /* Espaçamento de linha para melhor leitura */
+    }
+    
+    .resumo-numerico p:first-child {
+        font-weight: bold; /* Destaque para a informação mais importante */
+        color: #007bff; /* Cor destacada para o total de orientações */
+    }
+    
+
+    .orientador-resumo {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+  }
+  
+  .barra-progresso-container {
+      width: 100px; /* Ajuste conforme necessário */
+      height: 10px;
+      background-color: #ddd;
+      margin-left: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+  }
+  
+  .barra-progresso {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.3s ease;
+  }
+
+
+  .resumo-numerico-mychart4 {
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    color: #007bff;
+    text-align: center;
+    margin-top: 20px; /* Ajuste de margem superior para alinhamento */
+}
+
+.resumo-numerico-mychart4 p {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.resumo-numerico-mychart4 p:first-child {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.palavra-chave-resumo-mychart4 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.barra-progresso-container-mychart4 {
+    width: 100px;
+    height: 10px;
+    background-color: #ddd;
+    margin-left: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.barra-progresso-mychart4 {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+
     </style>
     <link rel="stylesheet" href="assets/css/style.css">
   </head>
@@ -595,10 +726,12 @@
         <div class="cardHeadersContainer">
           <div class="cardHeader">
             <h2>Distribuição de Títulos por Ano</h2>
+            <button id="toggleDropdown1" class="select-courses-button">Selecionar Cursos</button>
+            <div id="dropdown1" class="courses-dropdown" style="display: none;"></div>
             <div class="chart-container">
-              <canvas id="myChart1"></canvas>
+                <canvas id="myChart1"></canvas>
             </div>
-          </div>
+        </div>
 
           <div class="cardHeader2">
             <h2>Distribuição de Títulos por Curso</h2>
@@ -611,18 +744,26 @@
           </div>
 
           <div class="cardHeader3">
-            <h2>Distribuição 3</h2>
+            <h2>Top 20 Orientadores</h2>
+            <button id="toggleDropdown3">Selecionar Orientadores</button>
+            <div id="dropdown3" style="display: none;"></div>
             <div class="chart-container">
-              <canvas id="myChart3"></canvas>
+                <canvas id="myChart3"></canvas>
             </div>
-          </div>
+            <div id="resumoNumerico" class="resumo-numerico"></div>
+        </div>
 
-          <div class="cardHeader4">
-            <h2>Distribuição 4</h2>
-            <div class="chart-container">
-              <canvas id="myChart4"></canvas>
-            </div>
+        <div class="cardHeader4">
+          <h2>Palavras-chave Emergentes por Ano</h2>
+          <button id="toggleDropdown4">Selecionar Ano</button>
+          <div id="dropdown4" style="display: none;">
           </div>
+          <div class="chart-container-mychart4">
+              <canvas id="myChart4"></canvas>
+          </div>
+          <div id="resumoNumericoMyChart4" class="resumo-numerico-mychart4">
+          </div>
+      </div>
 
         </div>
         <script>
@@ -641,109 +782,115 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <script>
-  document.addEventListener('DOMContentLoaded', function() {
-        let chart;
-        let mapeamentoNomesCursos = {}; // Objeto para mapear nomes abreviados para completos
-    
-        function abreviarNomeCurso(nomeCurso, index) {
-            const maxComprimento = 15;
-            let nomeAbreviado = nomeCurso.length > maxComprimento ? nomeCurso.substring(0, maxComprimento - 3) + '...' : nomeCurso;
-            
-            // Usando o índice apenas internamente para o mapeamento
-            let nomeChave = `${nomeAbreviado}_${index}`;
-            mapeamentoNomesCursos[nomeChave] = nomeCurso;
-            return nomeAbreviado; // Retorna apenas o nome abreviado sem o índice
-        }
-    
-        fetch('/api/producao-cientifica/por-curso/')
-        .then(response => response.json())
-        .then(dados => {
-            const dropdown = document.getElementById('dropdown');
-            const cursos = Object.keys(dados);
-    
-            cursos.forEach((curso, index) => {
-                const checkbox = document.createElement('input');
-                checkbox.type = 'checkbox';
-                checkbox.id = curso;
-                checkbox.checked = true;
-                checkbox.onchange = () => atualizarGrafico();
-    
-                const label = document.createElement('label');
-                label.htmlFor = curso;
-                label.textContent = curso; // Usa o nome completo do curso para o label
-    
-                const div = document.createElement('div');
-                div.appendChild(checkbox);
-                div.appendChild(label);
-                dropdown.appendChild(div);
-            });
-    
-            const ctx = document.getElementById('myChart2').getContext('2d');
-            chart = new Chart(ctx, {
-                type: 'bar',
-                data: {},
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            display: false
+          document.addEventListener('DOMContentLoaded', function() {
+            let chart;
+            let mapeamentoNomesCursos = {}; // Objeto para mapear nomes abreviados para completos
+        
+            function abreviarNomeCurso(nomeCurso, index) {
+                const maxComprimento = 15;
+                let nomeAbreviado = nomeCurso.length > maxComprimento ? nomeCurso.substring(0, maxComprimento - 3) + '...' : nomeCurso;
+                
+                let nomeChave = `${nomeAbreviado}_${index}`;
+                mapeamentoNomesCursos[nomeChave] = nomeCurso;
+                return nomeAbreviado;
+            }
+        
+            function gerarCorAleatoria() {
+                return `hsl(${Math.random() * 360}, 70%, 50%)`;
+            }
+        
+            fetch('/api/producao-cientifica/por-curso/')
+            .then(response => response.json())
+            .then(dados => {
+                const dropdown = document.getElementById('dropdown');
+                const cursos = Object.keys(dados);
+        
+                cursos.forEach((curso, index) => {
+                    const checkbox = document.createElement('input');
+                    checkbox.type = 'checkbox';
+                    checkbox.id = curso;
+                    checkbox.checked = true;
+                    checkbox.onchange = () => atualizarGrafico();
+        
+                    const label = document.createElement('label');
+                    label.htmlFor = curso;
+                    label.textContent = curso; 
+        
+                    const div = document.createElement('div');
+                    div.appendChild(checkbox);
+                    div.appendChild(label);
+                    dropdown.appendChild(div);
+                });
+        
+                const ctx = document.getElementById('myChart2').getContext('2d');
+                chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {},
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        let label = context.dataset.label || '';
+                                        if (label) {
+                                            label += ': ';
+                                        }
+                                        if (context.parsed.y !== null) {
+                                            label += context.parsed.y;
+                                        }
+                                        return label;
+                                    },
+                                    title: function(tooltipItems) {
+                                        let chaveNomeCurso = tooltipItems[0].label + '_' + tooltipItems[0].dataIndex;
+                                        return mapeamentoNomesCursos[chaveNomeCurso];
+                                    }
+                                }
+                            }
                         },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) {
-                                        label += ': ';
-                                    }
-                                    if (context.parsed.y !== null) {
-                                        label += context.parsed.y;
-                                    }
-                                    return label;
-                                },
-                                title: function(tooltipItems) {
-                                    let chaveNomeCurso = tooltipItems[0].label + '_' + tooltipItems[0].dataIndex;
-                                    return mapeamentoNomesCursos[chaveNomeCurso];
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
                                 }
                             }
                         }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1 // Ajusta a escala para incrementos de 1
-                            }
-                        }
                     }
+                });
+        
+                function atualizarGrafico() {
+                    const selecionados = cursos.filter(curso => document.getElementById(curso).checked);
+                    const dadosFiltrados = selecionados.map(curso => dados[curso]);
+                    const labelsAbreviados = selecionados.map((curso, index) => abreviarNomeCurso(curso, index));
+        
+                    chart.data = {
+                        labels: labelsAbreviados,
+                        datasets: [{
+                            label: 'Número de Produções',
+                            data: dadosFiltrados,
+                            backgroundColor: selecionados.map(() => gerarCorAleatoria()),
+                            borderColor: selecionados.map(() => gerarCorAleatoria()),
+                            borderWidth: 1
+                        }]
+                    };
+                    chart.update();
                 }
+        
+                atualizarGrafico();
             });
-    
-            function atualizarGrafico() {
-                const selecionados = cursos.filter(curso => document.getElementById(curso).checked);
-                const dadosFiltrados = selecionados.map(curso => dados[curso]);
-                const labelsAbreviados = selecionados.map((curso, index) => abreviarNomeCurso(curso, index));
-    
-                chart.data = {
-                    labels: labelsAbreviados,
-                    datasets: [{
-                        label: 'Número de Produções',
-                        data: dadosFiltrados,
-                        backgroundColor: selecionados.map((_, index) => `hsl(${index * 360 / selecionados.length}, 70%, 50%)`)
-                    }]
-                };
-                chart.update();
-            }
-    
-            atualizarGrafico();
+        
+            document.getElementById('toggleDropdown').onclick = () => {
+                const dropdown = document.getElementById('dropdown');
+                dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+            };
         });
-    
-        document.getElementById('toggleDropdown').onclick = () => {
-            const dropdown = document.getElementById('dropdown');
-            dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
-        };
-    });
-
+        
+        
 
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -764,6 +911,327 @@
             mainContent.classList.remove('collapsed');
         }
     });
+});
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  let chart;
+
+  fetch('/api/producao-cientifica/por-ano/')
+  .then(response => response.json())
+  .then(dados => {
+      const dropdown1 = document.getElementById('dropdown1'); // Dropdown específico para myChart1
+      const cursos = Object.keys(dados);
+
+      cursos.forEach((curso, index) => {
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.id = `myChart1-${curso}`; // ID único para cada checkbox
+          checkbox.checked = true;
+          checkbox.onchange = () => atualizarGrafico();
+
+          const label = document.createElement('label');
+          label.htmlFor = `myChart1-${curso}`;
+          label.textContent = curso;
+
+          const div = document.createElement('div');
+          div.appendChild(checkbox);
+          div.appendChild(label);
+          dropdown1.appendChild(div); // Adiciona ao dropdown específico
+      });
+
+      const ctx = document.getElementById('myChart1').getContext('2d');
+      chart = new Chart(ctx, {
+          type: 'line',
+          data: { labels: [], datasets: [] },
+          options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: { display: false },
+                  tooltip: {
+                      callbacks: {
+                          label: function(context) {
+                              return context.dataset.label + ': ' + context.parsed.y;
+                          },
+                          title: function(tooltipItems) {
+                              return tooltipItems[0].label;
+                          }
+                      }
+                  }
+              },
+              scales: {
+                  y: { beginAtZero: true, ticks: { stepSize: 1 } },
+                  x: { type: 'category' }
+              }
+          }
+      });
+
+      function atualizarGrafico() {
+          let anos = new Set();
+          let cursosSelecionados = cursos.filter(curso => document.getElementById(`myChart1-${curso}`).checked);
+          cursosSelecionados.forEach(curso => {
+              Object.keys(dados[curso]).forEach(ano => anos.add(ano));
+          });
+          anos = Array.from(anos).sort();
+
+          const datasets = cursosSelecionados.map(curso => {
+              return {
+                  label: curso,
+                  data: anos.map(ano => dados[curso][ano] || 0),
+                  borderColor: `hsl(${Math.random() * 360}, 70%, 50%)`,
+                  fill: false
+              };
+          });
+
+          chart.data.labels = anos;
+          chart.data.datasets = datasets;
+          chart.update();
+      }
+
+      atualizarGrafico();
+  });
+
+  document.getElementById('toggleDropdown1').onclick = () => {
+      const dropdown = document.getElementById('dropdown1');
+      dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+  };
+});
+
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  let chart;
+
+  function gerarCorAleatoria() {
+      return `hsl(${Math.random() * 360}, 70%, 60%)`;
+  }
+
+  function criarBarraDeProgresso(valor, maximo, cor) {
+      const porcentagem = (valor / maximo) * 100;
+      return `<div class="barra-progresso-container" title="${valor} orientações">
+                  <div class="barra-progresso" style="width: ${porcentagem}%; background-color: ${cor};"></div>
+              </div>`;
+  }
+
+  function atualizarResumoNumerico(dados) {
+      const totalOrientacoes = Object.values(dados).reduce((sum, current) => sum + current, 0);
+      const topOrientadores = Object.entries(dados).sort((a, b) => b[1] - a[1]).slice(0, 3);
+      const maximoOrientacoes = topOrientadores[0][1];
+
+      const resumoElemento = document.getElementById('resumoNumerico');
+      resumoElemento.innerHTML = `<p>Total de Orientações: ${totalOrientacoes}</p>`;
+
+      topOrientadores.forEach(([nome, valor]) => {
+          const corBarra = gerarCorAleatoria();
+          const barraProgresso = criarBarraDeProgresso(valor, maximoOrientacoes, corBarra);
+
+          resumoElemento.innerHTML += `
+              <div class="orientador-resumo">
+                  <span>${nome}</span>
+                  ${barraProgresso}
+              </div>`;
+      });
+  }
+
+  fetch('/api/producao-cientifica/top-orientadores/')
+  .then(response => response.json())
+  .then(dados => {
+      const dropdown3 = document.getElementById('dropdown3');
+      const orientadores = Object.keys(dados).sort();
+
+      orientadores.forEach(orientador => {
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.id = `myChart3-${orientador}`;
+          checkbox.checked = true;
+          checkbox.onchange = () => atualizarGrafico();
+
+          const label = document.createElement('label');
+          label.htmlFor = `myChart3-${orientador}`;
+          label.textContent = orientador;
+
+          const div = document.createElement('div');
+          div.appendChild(checkbox);
+          div.appendChild(label);
+          dropdown3.appendChild(div);
+      });
+
+      const ctx = document.getElementById('myChart3').getContext('2d');
+      chart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+              labels: orientadores,
+              datasets: [{
+                  label: 'Total de Orientações',
+                  data: orientadores.map(orientador => dados[orientador]),
+                  backgroundColor: orientadores.map(() => gerarCorAleatoria()),
+                  borderColor: orientadores.map(() => 'rgba(255, 255, 255, 0.6)'),
+                  borderWidth: 2
+              }]
+          },
+          options: {
+              plugins: {
+                  legend: { display: false },
+                  tooltip: {
+                      callbacks: {
+                          label: function(context) {
+                              return context.label + ': ' + context.raw;
+                          }
+                      }
+                  }
+              },
+              responsive: true,
+              maintainAspectRatio: false
+          }
+      });
+
+      function atualizarGrafico() {
+          const orientadoresSelecionados = orientadores.filter(orientador => document.getElementById(`myChart3-${orientador}`).checked);
+          const dadosFiltrados = orientadoresSelecionados.map(orientador => dados[orientador]);
+
+          chart.data.labels = orientadoresSelecionados;
+          chart.data.datasets[0].data = dadosFiltrados;
+          chart.update();
+      }
+
+      atualizarResumoNumerico(dados);
+
+      document.getElementById('toggleDropdown3').onclick = () => {
+          const dropdown = document.getElementById('dropdown3');
+          dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+      };
+  });
+});
+
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  function gerarCorAleatoria(opacidade = 1) {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgba(${r}, ${g}, ${b}, ${opacidade})`;
+}
+  fetch('/api/producao-cientifica/palavras-chave-emergentes/')
+  .then(response => response.json())
+  .then(dados => {
+      const anos = Object.keys(dados).sort((a, b) => a - b);
+
+      const dropdown4 = document.getElementById('dropdown4');
+      anos.forEach(ano => {
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.id = `myChart4-${ano}`;
+          checkbox.checked = true;
+          checkbox.onchange = () => atualizarGrafico();
+
+          const label = document.createElement('label');
+          label.htmlFor = `myChart4-${ano}`;
+          label.textContent = ano;
+
+          const div = document.createElement('div');
+          div.appendChild(checkbox);
+          div.appendChild(label);
+          dropdown4.appendChild(div);
+      });
+
+      const ctx = document.getElementById('myChart4').getContext('2d');
+      let chart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: anos,
+              datasets: [{
+                  label: 'Frequência da Palavra-chave Emergente por Ano',
+                  data: anos.map(ano => dados[ano].frequencia),
+                  backgroundColor: gerarCorAleatoria(0.5),
+                  borderColor: gerarCorAleatoria(),
+                  borderWidth: 2,
+                  fill: 'origin',
+                  tension: 0.4
+              }]
+          },
+          options: {
+              scales: {
+                  y: { beginAtZero: true },
+                  x: { type: 'category' }
+              },
+              plugins: {
+                  tooltip: {
+                      callbacks: {
+                          label: function(tooltipItem) {
+                              const ano = tooltipItem.label;
+                              const { termo, frequencia } = dados[ano];
+                              return `${termo}: ${frequencia} vezes`;
+                          }
+                      }
+                  },
+                  legend: { display: true }
+              },
+              responsive: true,
+              maintainAspectRatio: false
+          }
+      });
+
+      function atualizarGrafico() {
+          const anosSelecionados = anos.filter(ano => document.getElementById(`myChart4-${ano}`).checked);
+          chart.data.labels = anosSelecionados;
+          chart.data.datasets[0].data = anosSelecionados.map(ano => dados[ano].frequencia);
+          chart.update();
+          atualizarResumoNumerico(anosSelecionados); 
+      }
+
+      function atualizarResumoNumerico(anosSelecionados) {
+          const resumoElemento = document.getElementById('resumoNumericoMyChart4');
+          resumoElemento.innerHTML = '';
+          const maximoFrequencia = Math.max(...anosSelecionados.map(ano => dados[ano].frequencia));
+          const topPalavrasChave = anosSelecionados
+              .map(ano => ({ ano, ...dados[ano] }))
+              .sort((a, b) => b.frequencia - a.frequencia)
+              .slice(0, 3);
+
+          resumoElemento.innerHTML = `<p>Total de Palavras-Chave: ${anosSelecionados.length}</p>`;
+
+          topPalavrasChave.forEach(({ ano, termo, frequencia }) => {
+            const corBarra = gerarCorAleatoria(); // Chamada da função para gerar uma cor aleatória
+            const barraProgresso = `<div class="barra-progresso-container-mychart4" title="${frequencia} ocorrências">
+                <div class="barra-progresso-mychart4" style="width: ${frequencia / maximoFrequencia * 100}%; background-color: ${corBarra};"></div>
+            </div>`;
+    
+            resumoElemento.innerHTML += `
+                <div class="palavra-chave-resumo-mychart4">
+                    <span>${ano}: ${termo}</span>
+                    ${barraProgresso}
+                </div>`;
+        });
+      }
+
+      document.getElementById('toggleDropdown4').onclick = () => {
+          const dropdown = document.getElementById('dropdown4');
+          dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+      };
+
+      atualizarGrafico(); // Inicializa o gráfico com todos os anos selecionados
+  })
+  .catch(error => {
+      console.error('Erro ao buscar dados: ', error);
+  });
 });
     </script>
 

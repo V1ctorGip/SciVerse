@@ -28,10 +28,16 @@ class UserProfile(models.Model):
     course = models.CharField("Course", max_length=255, blank=True)
     instagram_url = models.URLField("Instagram URL", blank=True)
     github_url = models.URLField("GitHub URL", blank=True)
-    website_url = models.URLField("Website URL", blank=True)
-    profile_picture = models.ImageField("Profile Picture", upload_to='profile_pictures/', blank=True, null=True)
+    linkedin_url = models.URLField("LinkedIn URL", blank=True)
+    profile_picture = models.ImageField(
+        "Profile Picture", 
+        upload_to='profile_pictures/', 
+        blank=True, 
+        null=True, 
+        default='usuarios\static\perfil.png' 
+    )
 
-    def __str__(self):
+    def _str_(self):
         return self.user.username
 
     def get_absolute_url(self):

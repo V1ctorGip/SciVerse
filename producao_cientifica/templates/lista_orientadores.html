@@ -11,7 +11,7 @@
 
     .heading {
         margin-bottom: 30px;
-        color: #2a2185; /* Cor do tema */
+        color: #2a2185;
         text-align: center;
     }
 
@@ -22,11 +22,11 @@
     }
 
     #search {
-        width: 50%; /* Aumenta o tamanho da barra de pesquisa */
-        padding: 10px; /* Aumenta a altura da barra de pesquisa */
-        font-size: 16px; /* Aumenta o tamanho da fonte */
-        border-radius: 5px; /* Arredonda as bordas da barra de pesquisa */
-        border: 1px solid #ddd; /* Adiciona uma borda sutil */
+        width: 50%;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ddd;
     }
 
     #orientadoresTable {
@@ -48,6 +48,46 @@
     #orientadoresTable tbody tr:hover {
         background-color: #f1f1f1;
     }
+
+    .perfil-btn {
+        background-color: #05750c;
+        color: white;
+        border: 1px solid #000000;
+        padding: 5px 10px;
+        font-size: 14px;
+        border-radius: 5px;
+        text-decoration: none;
+        transition: background-color 0.3s, color 0.3s;
+        display: block;
+        text-align: center;
+        width: auto;
+        margin: 0 auto;
+    }
+
+    .perfil-btn:hover {
+        background-color: white;
+        color: #134216;
+    }
+
+    #orientadoresTable th, #orientadoresTable td {
+        padding: 10px;
+        text-align: left; /* Alinhamento padrão à esquerda */
+        border-bottom: 1px solid #ddd;
+    }
+
+    #orientadoresTable th:nth-child(4), #orientadoresTable td:nth-child(4) {
+        text-align: center; /* Centraliza o conteúdo da coluna 'Quantidade de Orientações' */
+    }
+
+    #orientadoresTable th:nth-child(5), #orientadoresTable td:nth-child(5) {
+        text-align: center; /* Centraliza o conteúdo da coluna 'Quantidade de Orientações' */
+    }
+    @media (max-width: 768px) {
+        .perfil-btn {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+    }
 </style>
 {% endblock %}
 
@@ -55,25 +95,27 @@
 <div class="container mt-5">
     <div class="main-container">
         <h2 class="heading">Orientadores</h2>
-        
-        <!-- Campo de busca -->
         <div id="search-container">
             <input type="text" id="search" class="form-control" placeholder="Procurar orientador...">
         </div>
-
-        <!-- Tabela de orientadores -->
         <table id="orientadoresTable" class="table">
             <thead>
                 <tr>
-                    <th>N°</th>
-                    <th>Nome</th>
+                    <th>ID</th>
+                    <th>Nome Orientador</th>
+                    <th>Cursos Orientados</th>
+                    <th>Quantidade de Orientações</th>
+                    <th>Perfil Institucional</th>
                 </tr>
             </thead>
             <tbody>
                 {% for orientador in orientadores %}
                 <tr>
                     <td>{{ forloop.counter }}</td>
-                    <td>{{ orientador }}</td>
+                    <td>{{ orientador.nome_orientador }}</td>
+                    <td>{{ orientador.cursos_orientados }}</td>
+                    <td>{{ orientador.quantidade_orientacoes }}</td>
+                    <td><a href="#" class="perfil-btn">Perfil Institucional</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -83,21 +125,28 @@
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-    var ajaxSearchUrl = "{% url 'ajax_search' %}";
-    $('#search').on('keyup', function() {
-        let query = $(this).val();
-        if (query.length == 0 || query.length >= 3) {
-            $.get(ajaxSearchUrl, { q: query }, function(data) {
-                let tbody = $('#orientadoresTable tbody');
-                tbody.empty();
-                for (let i = 0; i < data.length; i++) {
-                    tbody.append(`<tr>
-                                    <td>${i + 1}</td>
-                                    <td>${data[i]}</td>
-                                  </tr>`);
+    $(document).ready(function() {
+        $('#search').on('keyup', function() {
+            var query = $(this).val().toLowerCase();
+            $.ajax({
+                url: "{% url 'lista_orientadores' %}",
+                data: { 'search': query },
+                dataType: 'json',
+                success: function(data) {
+                    var tbody = $('#orientadoresTable tbody');
+                    tbody.empty();
+                    $.each(data, function(index, orientador) {
+                        tbody.append(`<tr>
+                            <td>${index + 1}</td>
+                            <td>${orientador.nome_orientador}</td>
+                            <td>${orientador.cursos_orientados}</td>
+                            <td>${orientador.quantidade_orientacoes}</td>
+                            <td><a href="#" class="perfil-btn">Perfil Institucional</a></td>
+                        </tr>`);
+                    });
                 }
             });
-        }
+        });
     });
 </script>
 {% endblock %}

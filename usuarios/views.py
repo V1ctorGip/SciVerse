@@ -55,13 +55,21 @@ def perfil(request):
     profile, created = UserProfile.objects.get_or_create(user=user)
 
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, request.FILES, instance=profile)
-        if form.is_valid():
-            profile.bio = form.cleaned_data.get('bio')  # Garantir que a bio seja atualizada
-            form.save()
-            messages.success(request, 'Perfil atualizado com sucesso!')
-            return redirect('perfil')
-    else:
-        form = UserProfileForm(instance=profile)
+        # Atualiza campos existentes
+        profile.full_name = request.POST.get('full_name', profile.full_name)
+        profile.email = request.POST.get('email', profile.email)
+        profile.phone = request.POST.get('phone', profile.phone)
+        profile.course = request.POST.get('course', profile.course)
+        profile.bio = request.POST.get('bio', profile.bio)
+        profile.linkedin_url = request.POST.get('linkedin_url', profile.linkedin_url)
+        profile.github_url = request.POST.get('github_url', profile.github_url)
+        profile.instagram_url = request.POST.get('instagram_url', profile.instagram_url)
 
+        # Adiciona lógica para lidar com o upload de imagens
+        if 'profile_picture' in request.FILES:
+            profile.profile_picture = request.FILES['profile_picture']
+
+        profile.save()
+
+    form = UserProfileForm(instance=profile)
     return render(request, 'perfil.html', {'form': form})

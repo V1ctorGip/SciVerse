@@ -256,33 +256,33 @@
         }
 
 
-.navigation {
-    width: 300px;
-    /* outros estilos... */
-    transition: width 0.5s;
-}
+        .navigation {
+            width: 300px;
+            /* outros estilos... */
+            transition: width 0.5s;
+        }
 
-/* Sidebar recolhida */
-.navigation.collapsed {
-    width: 80px; /* Largura apenas para ícones */
-}
+        /* Sidebar recolhida */
+        .navigation.collapsed {
+            width: 80px; /* Largura apenas para ícones */
+        }
 
-/* Ajuste da logo na sidebar recolhida */
-.navigation.collapsed .dashboard-logo {
-    width: 50px; /* Tamanho da logo ajustado */
-    height: auto; /* Mantém a proporção */
-}
+        /* Ajuste da logo na sidebar recolhida */
+        .navigation.collapsed .dashboard-logo {
+            width: 50px; /* Tamanho da logo ajustado */
+            height: auto; /* Mantém a proporção */
+        }
 
-/* Conteúdo principal (não se ajusta quando a sidebar está expandida) */
-.main {
-    transition: margin-left 0.5s;
-    margin-left: 10px; /* Espaço padrão para a sidebar expandida */
-}
+        /* Conteúdo principal (não se ajusta quando a sidebar está expandida) */
+        .main {
+            transition: margin-left 0.5s;
+            margin-left: 10px; /* Espaço padrão para a sidebar expandida */
+        }
 
-/* Ajuste do conteúdo principal apenas quando a sidebar está recolhida */
-.main.collapsed {
-    margin-left: -80px; /* Espaço ajustado para a sidebar recolhida */
-}
+        /* Ajuste do conteúdo principal apenas quando a sidebar está recolhida */
+        .main.collapsed {
+            margin-left: -80px; /* Espaço ajustado para a sidebar recolhida */
+        }
     </style>
     {% block custom_styles %}{% endblock %}
     <link rel="stylesheet" href="assets/css/style.css">
@@ -314,7 +314,7 @@
   
             <!-- Nome de usuário com ícone de perfil -->
             <li>
-              <a href="#">
+              <a href="{% url 'perfil' %}">
                 <span class="icon">
                   <ion-icon name="person-circle"></ion-icon>
                   <!-- ícone de perfil -->
