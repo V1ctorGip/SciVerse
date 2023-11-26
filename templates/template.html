@@ -356,14 +356,18 @@
                   <div class="toggle">
                       <ion-icon name="menu-outline"></ion-icon>
                   </div>   
-                  <a href="/api/home/" class="back-icon">
-                    <ion-icon name="arrow-back-outline"></ion-icon>
+                  {% if orientador %}
+                  <a href="/api/orientadores/" class="back-icon">
+                      <ion-icon name="arrow-back-outline"></ion-icon>
                   </a>
-
-              </div>
+                  {% else %}
+                  <a href="/api/home/" class="back-icon">
+                      <ion-icon name="arrow-back-outline"></ion-icon>
+                  </a>
+                  {% endif %}
+      
+          </div>
               
-  
-          
           <script>
             document.addEventListener('DOMContentLoaded', function() {
             const toggleButton = document.querySelector('.toggle');

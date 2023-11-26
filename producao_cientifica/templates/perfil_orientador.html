@@ -1,0 +1,1066 @@
+{% extends "template.html" %}
+
+{% load static %}
+
+{% block custom_styles %}
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap");
+        * {
+          font-family: "Ubuntu", sans-serif;
+          margin: 0;
+          padding: 0;
+          box-sizing: border-box;
+        }
+        
+        :root {
+          --blue: #2a2185;
+          --white: #fff;
+          --gray: #f5f5f5;
+          --black1: #222;
+          --black2: #999;
+        }
+        
+        body {
+          min-height: 100vh;
+          overflow-x: hidden;
+        }
+        
+        .container {
+          position: relative;
+          width: 100%;
+        }
+        
+        /* =============== Navigation ================ */
+        .navigation {
+          position: fixed;
+          width: 300px;
+          height: 100%;
+          background: var(--blue);
+          border-left: 10px solid var(--blue);
+          transition: 0.5s;
+          overflow: hidden;
+        }
+        .navigation.active {
+          width: 80px;
+        }
+        
+        .navigation ul {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+        }
+        
+        .navigation ul li {
+          position: relative;
+          width: 100%;
+          list-style: none;
+          border-top-left-radius: 30px;
+          border-bottom-left-radius: 30px;
+        }
+        
+        .navigation ul li:hover,
+        .navigation ul li.hovered {
+          background-color: var(--white);
+        }
+        
+        .navigation ul li:nth-child(1) {
+          margin-bottom: 40px;
+          pointer-events: none;
+        }
+        
+        .navigation ul li a {
+          position: relative;
+          display: block;
+          width: 100%;
+          display: flex;
+          text-decoration: none;
+          color: var(--white);
+        }
+        .navigation ul li:hover a,
+        .navigation ul li.hovered a {
+          color: var(--blue);
+        }
+        
+        .navigation ul li a .icon {
+          position: relative;
+          display: block;
+          min-width: 60px;
+          height: 60px;
+          line-height: 75px;
+          text-align: center;
+        }
+        .navigation ul li a .icon ion-icon {
+          font-size: 1.75rem;
+        }
+        
+        .navigation ul li a .title {
+          position: relative;
+          display: block;
+          padding: 0 10px;
+          height: 60px;
+          line-height: 60px;
+          text-align: start;
+          white-space: nowrap;
+        }
+        
+        /* --------- curve outside ---------- */
+        .navigation ul li:hover a::before,
+        .navigation ul li.hovered a::before {
+          content: "";
+          position: absolute;
+          right: 0;
+          top: -50px;
+          width: 50px;
+          height: 50px;
+          background-color: transparent;
+          border-radius: 50%;
+          box-shadow: 35px 35px 0 10px var(--white);
+          pointer-events: none;
+        }
+        .navigation ul li:hover a::after,
+        .navigation ul li.hovered a::after {
+          content: "";
+          position: absolute;
+          right: 0;
+          bottom: -50px;
+          width: 50px;
+          height: 50px;
+          background-color: transparent;
+          border-radius: 50%;
+          box-shadow: 35px -35px 0 10px var(--white);
+          pointer-events: none;
+        }
+        
+        /* ===================== Main ===================== */
+        .main {
+          position: absolute;
+          width: calc(100% - 300px);
+          left: 300px;
+          min-height: 100vh;
+          background: var(--white);
+          transition: 0.5s;
+        }
+        .main.active {
+          width: calc(100% - 80px);
+          left: 80px;
+        }
+        
+        .topbar {
+          width: 100%;
+          height: 60px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 0 10px;
+        }
+        
+        .toggle {
+          position: relative;
+          width: 60px;
+          height: 60px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          font-size: 2.5rem;
+          cursor: pointer;
+        }
+        
+        .search {
+          position: relative;
+          width: 400px;
+          margin: 0 10px;
+        }
+        
+        .search label {
+          position: relative;
+          width: 100%;
+        }
+        
+        .search label input {
+          width: 100%;
+          height: 40px;
+          border-radius: 40px;
+          padding: 5px 20px;
+          padding-left: 35px;
+          font-size: 18px;
+          outline: none;
+          border: 1px solid var(--black2);
+        }
+        
+        .search label ion-icon {
+          position: absolute;
+          top: 0;
+          left: 10px;
+          font-size: 1.2rem;
+        }
+        
+        .user {
+          position: relative;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          overflow: hidden;
+          cursor: pointer;
+        }
+        
+        .user img {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+        
+        /* ======================= Cards ====================== */
+.cardBox {
+  position: relative;
+  width: 100%;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* Quatro cartões por linha por padrão */
+  grid-gap: 30px;
+}
+
+.cardBox .card {
+  background: var(--white);
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center; /* Adicionado para alinhar itens verticalmente */
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  border: 1px solid #2a2185;
+}
+
+.cardBox .card .numbers,
+.cardBox .card .cardName,
+.cardBox .card .iconBx {
+  transition: color 0.3s; /* Suavizar a transição de cores */
+}
+
+.cardBox .card .numbers {
+  font-weight: 500;
+  font-size: 2.5rem;
+  color: var(--blue);
+}
+
+.cardBox .card .cardName {
+  color: var(--black2);
+  font-size: 1.1rem;
+  margin-top: 5px;
+}
+
+.cardBox .card .iconBx {
+  font-size: 3.5rem;
+  color: var(--black2);
+}
+
+.cardBox .card:hover {
+  background: var(--blue);
+}
+
+.cardBox .card:hover .numbers,
+.cardBox .card:hover .cardName,
+.cardBox .card:hover .iconBx {
+  color: var(--white);
+}
+
+/* Responsividade */
+@media (max-width: 1500px) {
+  .cardBox {
+    grid-template-columns: repeat(3, 1fr); /* Três cartões por linha para telas um pouco menores */
+  }
+}
+
+@media (max-width: 1366px) {
+  .cardBox {
+    grid-template-columns: repeat(4, 1fr); /* Dois cartões por linha para tablets e telas médias */
+  }
+}
+
+@media (max-width: 768px) {
+  .cardBox {
+    grid-template-columns: 1fr; /* Um cartão por linha para telas de smartphones */
+  }
+}
+        
+
+  .cardHeadersContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Ajusta automaticamente o número de colunas baseado no tamanho da tela e no tamanho mínimo dos cartões */
+  grid-gap: 20px; /* Espaçamento entre os cartões */
+  margin: 10px;
+  padding: 10px;
+}
+
+.cardHeader,
+.cardHeader2,
+.cardHeader3,
+.cardHeader4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Ajustado de space-between para flex-start */
+  background-color: #fff;
+  border: 1px solid #2a2185;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  overflow: auto;
+  min-height: 300px; /* Mantenha a altura mínima consistente para todos os gráficos */
+  position: relative; /* Posicionamento relativo para os botões toggleDropdown */
+}
+
+.cardHeader h2,
+.cardHeader2 h2,
+.cardHeader3 h2,
+.cardHeader4 h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: var(--blue);
+  text-align: center;
+}
+
+.chart-container {
+  position: relative; /* 'responsive' não é um valor válido para a propriedade 'position' */
+  margin: 0 auto;
+  width: 100%; /* O gráfico ocupará todo o espaço disponível no container */
+  height: 30vh;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  overflow: auto;
+  min-height: 100px;
+  margin: auto;
+  margin-top: 5px;
+}
+
+.chart-container-mychart4 {
+  position: relative; /* 'responsive' não é um valor válido para a propriedade 'position' */
+  margin: 0 auto;
+  width: 100%; /* O gráfico ocupará todo o espaço disponível no container */
+  height: 30vh;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 5px;
+  overflow: auto;
+  min-height: 100px;
+  margin: auto;
+  margin-top: 5px;
+}
+.chart-container-mychart4 canvas {
+  width: 100%; /* Ajuste para largura */
+  height: calc(100% - 20px); /* Ajuste para altura, subtraindo a altura do botão */
+}
+
+      @media (max-width: 768px) {
+        .toggleDropdown {
+            padding: 5px 10px; /* Reduz o preenchimento em telas menores */
+            font-size: 10px; /* Reduz o tamanho da fonte em telas menores */
+            transform: translateY(-100%) translateX(10px); /* Ajuste para alinhar com a margem do container */
+        }
+      }
+      /* Media queries para ajustar o layout baseado no tamanho da tela */
+      @media (max-width: 768px) {
+        .cardHeadersContainer {
+          grid-template-columns: 1fr; /* Uma coluna para telas pequenas */
+        }
+      }
+
+      @media (min-width: 769px) and (max-width: 1024px) {
+        .cardHeadersContainer {
+          grid-template-columns: 1fr 1fr; /* Duas colunas para tablets e telas médias */
+        }
+      }
+
+      @media (min-width: 1025px) {
+        .cardHeadersContainer {
+          grid-template-columns: 1fr 1fr; /* Duas colunas para telas maiores, ajustando-se conforme necessário */
+        }
+      }
+        /* ====================== Responsive Design ========================== */
+        @media (max-width: 991px) {
+          .navigation {
+            left: -300px;
+          }
+          .navigation.active {
+            width: 300px;
+            left: 0;
+          }
+          .main {
+            width: 100%;
+            left: 0;
+          }
+          .main.active {
+            left: 300px;
+          }
+          .cardBox {
+            grid-template-columns: repeat(2, 1fr);
+          }
+        }
+          
+      .circle-logo {
+          width: 80px; /* Largura do círculo branco */
+          height: 80px; /* Altura do círculo branco */
+          background-color: white; /* Cor de fundo do círculo branco */
+          border-radius: 50%; /* Borda arredondada para criar o círculo */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+      .cardLink {
+          text-decoration: none; 
+          color: inherit; 
+      }
+      
+      .cardLink:hover {
+          text-decoration: none; 
+      }
+
+
+      #toggleDropdown, #toggleDropdown1, #toggleDropdown3, #toggleDropdown4 {
+        background-color: rgb(15, 134, 21);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 12px;
+        cursor: pointer;
+        border-radius: 8px;
+        position: relative; /* Posicionamento absoluto dentro do cardHeader */
+        top: 0; /* Posicionamento abaixo do título */
+        left: 0; /* Alinhamento à esquerda */
+        max-width: 180px;
+      }
+
+
+      #dropdown, #dropdown1, #dropdown3, #dropdown4 {
+        display: none; /* Inicialmente oculto */
+        position: absolute; /* Posicionamento absoluto */
+        background-color: #f9f9f9;
+        max-width: 200px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 2; /* Garante que apareça acima do conteúdo da página */
+        border-radius: 8px;
+        padding: 5px;
+        top: 80px; /* Posicionamento abaixo do botão */
+        left: 10px; /* Alinhamento à esquerda com o botão */
+      }
+      
+    
+       #dropdown div, #dropdown1 div, #dropdown3 div, #dropdown4 div {
+        margin: 5px 0;
+      }
+      
+      #dropdown label, #dropdown1 label, #dropdown3 label, #dropdown4 label {
+        margin-left: 5px;
+        font-size: 14px;
+      }
+      .navigation {
+          width: 300px;
+          transition: width 0.5s;
+      }
+
+      /* Sidebar recolhida */
+      .navigation.collapsed {
+          width: 80px; /* Largura apenas para ícones */
+      }
+
+      /* Ajuste da logo na sidebar recolhida */
+      .navigation.collapsed .dashboard-logo {
+          width: 50px; /* Tamanho da logo ajustado */
+          height: auto; /* Mantém a proporção */
+      }
+
+      /* Conteúdo principal (não se ajusta quando a sidebar está expandida) */
+      .main {
+          transition: margin-left 0.5s;
+          margin-left: 10px; /* Espaço padrão para a sidebar expandida */
+      }
+
+      /* Ajuste do conteúdo principal apenas quando a sidebar está recolhida */
+      .main.collapsed {
+          margin-left: -80px; /* Espaço ajustado para a sidebar recolhida */
+      }
+
+      .resumo-numerico {
+        background-color: #f2f2f2; /* Cor de fundo suave */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra leve para profundidade */
+        font-weight: bold; /* Escolha uma fonte elegante */
+        color: #007bff;  /* Cor de texto escura para contraste */
+        text-align: center; /* Centraliza o texto */
+    }
+    
+    .resumo-numerico p {
+        margin: 10px 0;
+        font-size: 16px; /* Tamanho de fonte legível */
+        line-height: 1.5; /* Espaçamento de linha para melhor leitura */
+    }
+    
+    .resumo-numerico p:first-child {
+        font-weight: bold; /* Destaque para a informação mais importante */
+        color: #007bff; /* Cor destacada para o total de orientações */
+    }
+    
+
+    .orientador-resumo {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+  }
+  
+  .barra-progresso-container {
+      width: 100px; /* Ajuste conforme necessário */
+      height: 10px;
+      background-color: #ddd;
+      margin-left: 10px;
+      border-radius: 5px;
+      overflow: hidden;
+  }
+  
+  .barra-progresso {
+      height: 100%;
+      border-radius: 5px;
+      transition: width 0.3s ease;
+  }
+
+
+  .resumo-numerico-mychart4 {
+    background-color: #f2f2f2;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-weight: bold;
+    color: #007bff;
+    text-align: center;
+    margin-top: 20px; /* Ajuste de margem superior para alinhamento */
+}
+
+.resumo-numerico-mychart4 p {
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.resumo-numerico-mychart4 p:first-child {
+    font-weight: bold;
+    color: #007bff;
+}
+
+.palavra-chave-resumo-mychart4 {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.barra-progresso-container-mychart4 {
+    width: 100px;
+    height: 10px;
+    background-color: #ddd;
+    margin-left: 10px;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.barra-progresso-mychart4 {
+    height: 100%;
+    border-radius: 5px;
+    transition: width 0.3s ease;
+}
+h1 {
+    text-align: center; /* Alinhar o texto no centro */
+    color: #2a2185; /* Cor do texto */
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>{{ orientador }}</h1>
+    
+    <!-- Card Headers Container -->
+    <div class="cardHeadersContainer">
+        <div class="cardHeader">
+          <h2>Orientações de {{orientador}} por Ano</h2>
+          <button id="toggleDropdown1" class="select-courses-button">Selecionar Cursos</button>
+          <div id="dropdown1" class="courses-dropdown" style="display: none;"></div>
+          <div class="chart-container">
+              <canvas id="myChart1"></canvas>
+          </div>
+      </div>
+
+        <div class="cardHeader2">
+          <h2>Cursos Orientados</h2>
+          <button id="toggleDropdown">Selecionar Cursos</button>
+          <div id="dropdown" class="dropdown-content" style="display: none;">
+          </div>
+          <div class="chart-container">
+            <canvas id="myChart2"></canvas>
+          </div>
+        </div>
+
+        <div class="cardHeader3">
+          <h2>Comparar com outros orientadores</h2>
+          <button id="toggleDropdown3">Selecionar Orientadores</button>
+          <div id="dropdown3" style="display: none;"></div>
+          <div class="chart-container">
+              <canvas id="myChart3"></canvas>
+          </div>
+          <div id="resumoNumerico" class="resumo-numerico"></div>
+      </div>
+
+      <div class="cardHeader4">
+        <h2>Análise de tendências</h2>
+        <button id="toggleDropdown4">Selecionar Ano</button>
+        <div id="dropdown4" style="display: none;">
+        </div>
+        <div class="chart-container-mychart4">
+            <canvas id="myChart4"></canvas>
+        </div>
+        <div id="resumoNumericoMyChart4" class="resumo-numerico-mychart4">
+        </div>
+    </div>
+
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    let chart;
+
+    function gerarCorAleatoria() {
+        return `hsl(${Math.random() * 360}, 70%, 50%)`;
+    }
+
+    let orientador = encodeURIComponent("{{ orientador }}");  // Nome do orientador
+
+    fetch(`/api/producao-cientifica/orientacoes-por-curso/${orientador}`)
+    .then(response => response.json())
+    .then(dados => {
+        const dropdown = document.getElementById('dropdown');
+        const cursos = Object.keys(dados);
+
+        cursos.forEach((curso, index) => {
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = curso;
+            checkbox.checked = true;
+            checkbox.onchange = () => atualizarGrafico();
+
+            const label = document.createElement('label');
+            label.htmlFor = curso;
+            label.textContent = curso;
+
+            const div = document.createElement('div');
+            div.appendChild(checkbox);
+            div.appendChild(label);
+            dropdown.appendChild(div);
+        });
+
+        if (cursos.length >= 10) {
+            dropdown.style.maxHeight = '200px';
+            dropdown.style.overflowY = 'scroll';
+        }
+
+        const ctx = document.getElementById('myChart2').getContext('2d');
+        chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: cursos,
+                datasets: [{
+                    label: 'Número de Orientações por Curso',
+                    data: cursos.map(curso => dados[curso]),
+                    backgroundColor: cursos.map(() => gerarCorAleatoria()),
+                    borderColor: cursos.map(() => gerarCorAleatoria()),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                // Alterado para exibir apenas o número de orientações na linha seguinte
+                                return `${context.parsed.y} orientações`;
+                            },
+                            title: function(tooltipItems) {
+                                // Título do tooltip mostra apenas o nome do curso
+                                return tooltipItems[0].label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                }
+            }
+        });
+
+        function atualizarGrafico() {
+            const cursosSelecionados = cursos.filter(curso => document.getElementById(curso).checked);
+            const dadosFiltrados = cursosSelecionados.map(curso => dados[curso]);
+
+            chart.data.labels = cursosSelecionados;
+            chart.data.datasets[0].data = dadosFiltrados;
+            chart.update();
+        }
+
+        atualizarGrafico();
+    });
+
+    document.getElementById('toggleDropdown').onclick = () => {
+        const dropdown = document.getElementById('dropdown');
+        dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+    };
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  let chart;
+
+  let orientador = encodeURIComponent("{{ orientador }}");
+
+  fetch(`/api/producao-cientifica/orientador/${orientador}/`)
+      .then(response => response.json())
+      .then(dados => {
+          const anos = Object.keys(dados).sort((a, b) => a - b);
+          const dropdown1 = document.getElementById('dropdown1');
+
+          anos.forEach(ano => {
+              const checkbox = document.createElement('input');
+              checkbox.type = 'checkbox';
+              checkbox.id = `myChart1-${ano}`;
+              checkbox.checked = true;
+              checkbox.onchange = () => atualizarGrafico();
+
+              const label = document.createElement('label');
+              label.htmlFor = `myChart1-${ano}`;
+              label.textContent = ano;
+
+              const div = document.createElement('div');
+              div.appendChild(checkbox);
+              div.appendChild(label);
+              dropdown1.appendChild(div);
+          });
+
+          // Adiciona barra de rolagem se houver 10 ou mais anos
+          if (anos.length >= 10) {
+              dropdown1.style.maxHeight = '200px';
+              dropdown1.style.overflowY = 'scroll';
+          }
+
+          // Bloqueia o botão de dropdown se houver apenas um ano
+          const toggleDropdown1 = document.getElementById('toggleDropdown1');
+          if (anos.length === 1) {
+              toggleDropdown1.disabled = true;
+          }
+
+          const ctx = document.getElementById('myChart1').getContext('2d');
+          chart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                  labels: anos,
+                  datasets: [{
+                      label: `Orientações de ${decodeURIComponent(orientador)}`,
+                      data: anos.map(ano => dados[ano]),
+                      borderColor: 'rgb(75, 192, 192)',
+                      tension: 0.1
+                  }]
+              },
+              options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                      legend: { display: false },
+                      tooltip: {
+                          callbacks: {
+                              label: function(context) {
+                                  return `${context.parsed.y} orientações`;
+                              }
+                          }
+                      }
+                  },
+                  scales: {
+                      y: { beginAtZero: true }
+                  }
+              }
+          });
+
+          function atualizarGrafico() {
+              const anosSelecionados = anos.filter(ano => document.getElementById(`myChart1-${ano}`).checked);
+              chart.data.labels = anosSelecionados;
+              chart.data.datasets[0].data = anosSelecionados.map(ano => dados[ano]);
+              chart.update();
+          }
+
+          toggleDropdown1.onclick = () => {
+              dropdown1.style.display = dropdown1.style.display === 'none' ? 'block' : 'none';
+          };
+      })
+      .catch(error => {
+          console.error('Erro ao buscar dados: ', error);
+      });
+});
+
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  let chart;
+
+  function gerarCorAleatoria() {
+      return `hsl(${Math.random() * 360}, 70%, 60%)`;
+  }
+
+  function criarBarraDeProgresso(valor, maximo, cor) {
+      const porcentagem = (valor / maximo) * 100;
+      return `<div class="barra-progresso-container" title="${valor} orientações">
+                  <div class="barra-progresso" style="width: ${porcentagem}%; background-color: ${cor};"></div>
+              </div>`;
+  }
+
+  function atualizarResumoNumerico(orientadores) {
+      const totalOrientacoes = orientadores.reduce((sum, item) => sum + item.total_orientacoes, 0);
+      const topOrientadores = orientadores.slice().sort((a, b) => b.total_orientacoes - a.total_orientacoes).slice(0, 3);
+      const maximoOrientacoes = topOrientadores[0].total_orientacoes;
+
+      const resumoElemento = document.getElementById('resumoNumerico');
+      resumoElemento.innerHTML = `<p>Total de Orientações: ${totalOrientacoes}</p>`;
+
+      topOrientadores.forEach(item => {
+          const corBarra = gerarCorAleatoria();
+          const barraProgresso = criarBarraDeProgresso(item.total_orientacoes, maximoOrientacoes, corBarra);
+
+          resumoElemento.innerHTML += `
+              <div class="orientador-resumo">
+                  <span>${item.nome_orientador}</span>
+                  ${barraProgresso}
+              </div>`;
+      });
+  }
+
+  let orientadorAtual = "{{ orientador }}";
+
+  fetch('/api/producao-cientifica/top-orientadores-comparativo/?orientador=' + encodeURIComponent(orientadorAtual))
+  .then(response => response.json())
+  .then(data => {
+      const orientadores = data.orientadores;
+      const dropdown3 = document.getElementById('dropdown3');
+
+      orientadores.forEach(item => {
+          const checkbox = document.createElement('input');
+          checkbox.type = 'checkbox';
+          checkbox.id = `myChart3-${item.nome_orientador}`;
+          checkbox.checked = true;
+          checkbox.disabled = item.is_current;
+          checkbox.onchange = () => atualizarGrafico();
+
+          const label = document.createElement('label');
+          label.htmlFor = `myChart3-${item.nome_orientador}`;
+          label.textContent = item.nome_orientador;
+
+          const div = document.createElement('div');
+          div.appendChild(checkbox);
+          div.appendChild(label);
+          dropdown3.appendChild(div);
+      });
+
+      if (orientadores.length >= 10) {
+          dropdown3.style.maxHeight = '200px'; 
+          dropdown3.style.overflowY = 'scroll'; 
+      }
+
+      const ctx = document.getElementById('myChart3').getContext('2d');
+      chart = new Chart(ctx, {
+          type: 'doughnut',
+          data: {
+              labels: orientadores.map(item => item.nome_orientador),
+              datasets: [{
+                  label: 'Total de Orientações',
+                  data: orientadores.map(item => item.total_orientacoes),
+                  backgroundColor: orientadores.map(() => gerarCorAleatoria()),
+                  borderColor: orientadores.map(() => 'rgba(255, 255, 255, 0.6)'),
+                  borderWidth: 2
+              }]
+          },
+          options: {
+              plugins: {
+                  legend: { display: false },
+                  tooltip: {
+                      callbacks: {
+                          title: function(tooltipItems) {
+                              return tooltipItems[0].label;
+                          },
+                          label: function(tooltipItem) {
+                              return `${tooltipItem.raw} orientações`;
+                          }
+                      }
+                  }
+              },
+              responsive: true,
+              maintainAspectRatio: false
+          }
+      });
+
+      function atualizarGrafico() {
+          const orientadoresSelecionados = orientadores.filter(item => document.getElementById(`myChart3-${item.nome_orientador}`).checked);
+          const dadosFiltrados = orientadoresSelecionados.map(item => item.total_orientacoes);
+
+          chart.data.labels = orientadoresSelecionados.map(item => item.nome_orientador);
+          chart.data.datasets[0].data = dadosFiltrados;
+          chart.update();
+
+          atualizarResumoNumerico(orientadoresSelecionados);
+      }
+
+      atualizarGrafico();
+
+      document.getElementById('toggleDropdown3').onclick = () => {
+          const dropdown = document.getElementById('dropdown3');
+          dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+      };
+  });
+});
+
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+  let chart;
+  let orientador = encodeURIComponent("{{ orientador }}");
+
+  fetch(`/api/producao-cientifica/palavras-chave-orientador/${orientador}`)
+      .then(response => response.json())
+      .then(dados => {
+          const anos = Object.keys(dados).sort((a, b) => a - b);
+          const dropdown4 = document.getElementById('dropdown4');
+          anos.forEach(ano => {
+              const checkbox = document.createElement('input');
+              checkbox.type = 'checkbox';
+              checkbox.id = `myChart4-${ano}`;
+              checkbox.checked = true;
+              checkbox.onchange = () => atualizarGrafico(dados);
+              const label = document.createElement('label');
+              label.htmlFor = `myChart4-${ano}`;
+              label.textContent = ano;
+              const div = document.createElement('div');
+              div.appendChild(checkbox);
+              div.appendChild(label);
+              dropdown4.appendChild(div);
+          });
+
+          if (anos.length >= 10) {
+              dropdown4.style.maxHeight = '200px';
+              dropdown4.style.overflowY = 'scroll';
+          }
+
+          const ctx = document.getElementById('myChart4').getContext('2d');
+          chart = new Chart(ctx, {
+              type: 'line',
+              data: {
+                  labels: anos,
+                  datasets: [{
+                      label: 'Palavras-chave Emergentes por Ano',
+                      data: [],
+                      backgroundColor: 'rgba(0, 123, 255, 0.5)',
+                      borderColor: 'rgba(0, 123, 255, 1)',
+                      borderWidth: 2,
+                      fill: 'origin',
+                      tension: 0.4
+                  }]
+              },
+              options: {
+                  scales: {
+                      y: { beginAtZero: true },
+                      x: { type: 'category' }
+                  },
+                  plugins: {
+                      tooltip: {
+                          callbacks: {
+                              label: function(context) {
+                                  return `${context.raw.termo}\n${context.raw.y} ocorrências`;
+                              }
+                          }
+                      },
+                      legend: { display: true }
+                  },
+                  responsive: true,
+                  maintainAspectRatio: false
+              }
+          });
+
+          function atualizarGrafico(dadosCompletos) {
+              const anosSelecionados = anos.filter(ano => document.getElementById(`myChart4-${ano}`).checked);
+              chart.data.labels = anosSelecionados;
+              chart.data.datasets[0].data = anosSelecionados.map(ano => {
+                  let maxFreq = 0;
+                  let maxTermo = '';
+                  for (let termo in dadosCompletos[ano]) {
+                      if (dadosCompletos[ano][termo] > maxFreq) {
+                          maxFreq = dadosCompletos[ano][termo];
+                          maxTermo = termo;
+                      }
+                  }
+                  return { y: maxFreq, termo: maxTermo };
+              });
+              chart.update();
+              atualizarResumoNumerico(dadosCompletos, anosSelecionados);
+          }
+
+          function atualizarResumoNumerico(dadosCompletos, anosSelecionados) {
+              const resumoElemento = document.getElementById('resumoNumericoMyChart4');
+              resumoElemento.innerHTML = '';
+              let palavrasTotais = {};
+              anosSelecionados.forEach(ano => {
+                  for (let termo in dadosCompletos[ano]) {
+                      palavrasTotais[termo] = (palavrasTotais[termo] || 0) + dadosCompletos[ano][termo];
+                  }
+              });
+              let topPalavras = Object.entries(palavrasTotais).sort((a, b) => b[1] - a[1]).slice(0, 3);
+              topPalavras.forEach(([termo, freq]) => {
+                  const corBarra = gerarCorAleatoria();
+                  const barraProgresso = `<div class="barra-progresso-container-mychart4" title="${freq} ocorrências">
+                      <div class="barra-progresso-mychart4" style="width: 100%; background-color: ${corBarra};"></div>
+                  </div>`;
+                  resumoElemento.innerHTML += `<div class="palavra-chave-resumo-mychart4">
+                      <span>${termo}</span>${barraProgresso}
+                  </div>`;
+              });
+          }
+
+          atualizarGrafico(dados);
+
+          document.getElementById('toggleDropdown4').onclick = () => {
+              const dropdown = document.getElementById('dropdown4');
+              dropdown.style.display = dropdown.style.display === 'none' ? 'block' : 'none';
+          };
+      })
+      .catch(error => {
+          console.error('Erro ao buscar dados: ', error);
+      });
+
+  function gerarCorAleatoria() {
+      const r = Math.floor(Math.random() * 256);
+      const g = Math.floor(Math.random() * 256);
+      const b = Math.floor(Math.random() * 256);
+      return `rgba(${r}, ${g}, ${b}, 1)`;
+  }
+});
+
+</script>
+
+{% endblock %}
+
+

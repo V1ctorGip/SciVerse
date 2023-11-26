@@ -115,7 +115,7 @@
                     <td>{{ orientador.nome_orientador }}</td>
                     <td>{{ orientador.cursos_orientados }}</td>
                     <td>{{ orientador.quantidade_orientacoes }}</td>
-                    <td><a href="#" class="perfil-btn">Perfil Institucional</a></td>
+                    <td><a href="{% url 'perfil_orientador' orientador.nome_orientador %}" class="perfil-btn">Perfil Institucional</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -136,12 +136,14 @@
                     var tbody = $('#orientadoresTable tbody');
                     tbody.empty();
                     $.each(data, function(index, orientador) {
+                        // Certifique-se de usar acentos graves para interpolação de string
+                        var perfilUrl = `{% url 'perfil_orientador' 'placeholder' %}`.replace('placeholder', encodeURIComponent(orientador.nome_orientador));
                         tbody.append(`<tr>
                             <td>${index + 1}</td>
                             <td>${orientador.nome_orientador}</td>
                             <td>${orientador.cursos_orientados}</td>
                             <td>${orientador.quantidade_orientacoes}</td>
-                            <td><a href="#" class="perfil-btn">Perfil Institucional</a></td>
+                            <td><a href="${perfilUrl}" class="perfil-btn">Perfil Institucional</a></td>
                         </tr>`);
                     });
                 }

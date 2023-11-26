@@ -765,12 +765,12 @@
           </div>
       </div>
 
-        </div>
+       
         <script>
               document.getElementById("orientadoresCard").addEventListener("click", function() {
                   window.location.href = "{% url 'lista_orientadores' %}";
               });
-    </script>
+        </script>
         <!-- =========== Scripts =========  -->
         <script src="assets/js/main.js"></script>
 
@@ -821,6 +821,12 @@
                     div.appendChild(label);
                     dropdown.appendChild(div);
                 });
+        
+                // Adiciona barra de rolagem se houver 10 ou mais cursos
+                if (cursos.length >= 10) {
+                    dropdown.style.maxHeight = '200px'; // Define uma altura máxima
+                    dropdown.style.overflowY = 'scroll'; // Adiciona barra de rolagem vertical
+                }
         
                 const ctx = document.getElementById('myChart2').getContext('2d');
                 chart = new Chart(ctx, {
@@ -891,6 +897,8 @@
         });
         
         
+        
+        
 
 
     document.addEventListener('DOMContentLoaded', function() {
@@ -945,6 +953,12 @@ document.addEventListener('DOMContentLoaded', function() {
           div.appendChild(label);
           dropdown1.appendChild(div); // Adiciona ao dropdown específico
       });
+
+      // Adiciona barra de rolagem se houver 10 ou mais itens
+      if (cursos.length >= 10) {
+          dropdown1.style.maxHeight = '200px'; // Define uma altura máxima
+          dropdown1.style.overflowY = 'scroll'; // Adiciona barra de rolagem vertical
+      }
 
       const ctx = document.getElementById('myChart1').getContext('2d');
       chart = new Chart(ctx, {
@@ -1067,6 +1081,10 @@ document.addEventListener('DOMContentLoaded', function() {
           div.appendChild(label);
           dropdown3.appendChild(div);
       });
+      if (orientadores.length >= 10) {
+        dropdown3.style.maxHeight = '200px'; // Define uma altura máxima
+        dropdown3.style.overflowY = 'scroll'; // Adiciona barra de rolagem vertical
+    }
 
       const ctx = document.getElementById('myChart3').getContext('2d');
       chart = new Chart(ctx, {
@@ -1087,7 +1105,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   tooltip: {
                       callbacks: {
                           label: function(context) {
-                              return context.label + ': ' + context.raw;
+                              return `${context.raw} orientações`; // Estrutura do tooltip corrigida
                           }
                       }
                   }
@@ -1114,7 +1132,6 @@ document.addEventListener('DOMContentLoaded', function() {
       };
   });
 });
-
 
 
 
@@ -1151,6 +1168,11 @@ document.addEventListener('DOMContentLoaded', function() {
           div.appendChild(label);
           dropdown4.appendChild(div);
       });
+
+      if (anos.length >= 10) {
+        dropdown4.style.maxHeight = '200px'; // Define uma altura máxima
+        dropdown4.style.overflowY = 'scroll'; // Adiciona barra de rolagem vertical
+    }
 
       const ctx = document.getElementById('myChart4').getContext('2d');
       let chart = new Chart(ctx, {
@@ -1233,6 +1255,7 @@ document.addEventListener('DOMContentLoaded', function() {
       console.error('Erro ao buscar dados: ', error);
   });
 });
+
     </script>
 
       </body>

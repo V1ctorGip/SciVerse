@@ -14,6 +14,8 @@ from django.http import JsonResponse
 from django.db.models.functions import ExtractYear
 import unicodedata
 import re
+from django.shortcuts import render, get_object_or_404,Http404
+import logging
 
 def home(request):
     total_publicacoes = ProducaoCientifica.objects.count()
@@ -99,6 +101,8 @@ def people(request):
     queryset = Person.objects.all()
     people_table = PersonTable(queryset)
     return render(request, "lista_orientadores.html", {'people_table': people_table})
+
+logger = logging.getLogger(__name__)
 
 def ajax_search(request):
     query = request.GET.get('q', '')
@@ -262,5 +266,85 @@ def palavras_chave_emergentes_por_ano(request):
     for ano, palavras in frequencia_por_ano.items():
         mais_frequente, freq = max(palavras.items(), key=lambda item: item[1], default=('', 0))
         resultado[ano] = {'termo': mais_frequente, 'frequencia': freq}
+
+    return JsonResponse(resultado)
+
+
+def perfil_orientador(request, nome_orientador):
+    # Buscar a primeira publicação que tem este orientador
+    publicacao = ProducaoCientifica.objects.filter(nome_orientador=nome_orientador).first()
+    if not publicacao:
+        # Se não encontrar nenhuma publicação com este orientador, retorne uma página de erro 404
+        raise Http404("Orientador não encontrado")
+
+    return render(request, 'perfil_orientador.html', {'orientador': nome_orientador})
+
+def producao_cientifica_orientador(request, orientador):
+    # Contar as produções por ano do orientador específico
+    contador_anos = ProducaoCientifica.objects.filter(nome_orientador=orientador).annotate(ano=ExtractYear('data_da_defesa')).values('ano').annotate(total=Count('id')).order_by('ano')
+
+    # Estrutura de dados para armazenar a contagem
+    dados = {}
+    for item in contador_anos:
+        ano = item['ano']
+        dados[ano] = item['total']
+
+    return JsonResponse(dados)
+
+def top_orientadores_comparativo(request):
+    # Obter o orientador específico do contexto
+    orientador_especifico = request.GET.get('orientador', None)
+
+    if orientador_especifico:
+        # Obter cursos orientados pelo orientador especificado
+        cursos_orientador_especifico = ProducaoCientifica.objects.filter(nome_orientador=orientador_especifico).values_list('nome_do_curso', flat=True).distinct()
+
+        # Obter orientadores que orientam os mesmos cursos
+        orientacoes = ProducaoCientifica.objects.filter(nome_do_curso__in=cursos_orientador_especifico)
+    else:
+        orientacoes = ProducaoCientifica.objects.all()
+
+    # Contar as orientações de cada orientador
+    contador_orientadores = orientacoes.values('nome_orientador').annotate(total=Count('id')).order_by('-total')
+
+    # Preparar os dados para a resposta
+    dados = []
+    for item in contador_orientadores:
+        orientador = item['nome_orientador']
+        dados.append({
+            'nome_orientador': orientador,
+            'total_orientacoes': item['total'],
+            'is_current': orientador == orientador_especifico
+        })
+
+    return JsonResponse({'orientadores': dados})
+
+
+def orientacoes_por_curso(request, nome_orientador):
+    # Filtrar as produções científicas pelo nome do orientador
+    orientacoes = ProducaoCientifica.objects.filter(nome_orientador=nome_orientador)
+
+    # Agrupar as orientações por curso e contar
+    contagem_por_curso = orientacoes.values('nome_do_curso').annotate(total=Count('id')).order_by('nome_do_curso')
+
+    # Converter para o formato adequado para o JSON
+    dados = {item['nome_do_curso']: item['total'] for item in contagem_por_curso}
+
+    return JsonResponse(dados)
+
+def palavras_chave_orientador(request, orientador):
+    publicacoes = ProducaoCientifica.objects.filter(nome_orientador=orientador)
+    frequencia_palavras_por_ano = defaultdict(lambda: defaultdict(int))
+
+    for publicacao in publicacoes:
+        ano = publicacao.data_da_defesa.year
+        for palavra in publicacao.palavras_chave.all():
+            frequencia_palavras_por_ano[ano][palavra.termo] += 1
+
+    # Filtrar para manter apenas as palavras-chave mais frequentes por ano
+    resultado = {}
+    for ano, palavras in frequencia_palavras_por_ano.items():
+        palavras_mais_frequentes = sorted(palavras.items(), key=lambda x: x[1], reverse=True)[:5]  # Top 5 palavras-chave
+        resultado[ano] = {termo: frequencia for termo, frequencia in palavras_mais_frequentes}
 
     return JsonResponse(resultado)
