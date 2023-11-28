@@ -291,9 +291,17 @@ def producao_cientifica_orientador(request, orientador):
 
     return JsonResponse(dados)
 
+def normalize_string(s):
+    """Remove acentos, espaços e converte para minúsculas."""
+    return ''.join(unicodedata.normalize('NFKD', ch).encode('ASCII', 'ignore').decode('ASCII').lower() for ch in s if not ch.isspace())
+
 def top_orientadores_comparativo(request):
     # Obter o orientador específico do contexto
     orientador_especifico = request.GET.get('orientador', None)
+    orientador_especifico_normalizado = normalize_string(orientador_especifico) if orientador_especifico else None
+
+    # Inicializar dicionário para contagem de orientações
+    contagem_orientadores = {}
 
     if orientador_especifico:
         # Obter cursos orientados pelo orientador especificado
@@ -304,31 +312,61 @@ def top_orientadores_comparativo(request):
     else:
         orientacoes = ProducaoCientifica.objects.all()
 
-    # Contar as orientações de cada orientador
-    contador_orientadores = orientacoes.values('nome_orientador').annotate(total=Count('id')).order_by('-total')
+    for orientacao in orientacoes:
+        orientador = orientacao.nome_orientador
+        orientador_normalizado = normalize_string(orientador)
+
+        if orientador_normalizado not in contagem_orientadores:
+            contagem_orientadores[orientador_normalizado] = {
+                'nome_original': orientador, 
+                'total': 0, 
+                'is_current': orientador_normalizado == orientador_especifico_normalizado
+            }
+
+        contagem_orientadores[orientador_normalizado]['total'] += 1
 
     # Preparar os dados para a resposta
-    dados = []
-    for item in contador_orientadores:
-        orientador = item['nome_orientador']
-        dados.append({
-            'nome_orientador': orientador,
-            'total_orientacoes': item['total'],
-            'is_current': orientador == orientador_especifico
-        })
+    dados = [
+        {
+            'nome_orientador': data['nome_original'],
+            'total_orientacoes': data['total'],
+            'is_current': data['is_current']
+        }
+        for _, data in contagem_orientadores.items()
+    ]
 
-    return JsonResponse({'orientadores': dados})
+    # Ordenar os dados
+    dados_ordenados = sorted(dados, key=lambda x: x['total_orientacoes'], reverse=True)
 
+    return JsonResponse({'orientadores': dados_ordenados})
+
+def normalize_string(s):
+    """Remove acentos, espaços e converte para minúsculas."""
+    return ''.join(unicodedata.normalize('NFKD', ch).encode('ASCII', 'ignore').decode('ASCII').lower() for ch in s if not ch.isspace())
 
 def orientacoes_por_curso(request, nome_orientador):
-    # Filtrar as produções científicas pelo nome do orientador
-    orientacoes = ProducaoCientifica.objects.filter(nome_orientador=nome_orientador)
+    # Normalizar o nome do orientador
+    nome_orientador_normalizado = normalize_string(nome_orientador)
 
-    # Agrupar as orientações por curso e contar
-    contagem_por_curso = orientacoes.values('nome_do_curso').annotate(total=Count('id')).order_by('nome_do_curso')
+    # Filtrar as produções científicas
+    orientacoes = ProducaoCientifica.objects.all()
+
+    # Inicializar um dicionário para contar as orientações por curso
+    contagem_por_curso = {}
+
+    for orientacao in orientacoes:
+        orientador_atual = orientacao.nome_orientador
+        orientador_atual_normalizado = normalize_string(orientador_atual)
+
+        # Verificar se o nome normalizado do orientador atual corresponde ao nome do orientador solicitado
+        if orientador_atual_normalizado == nome_orientador_normalizado:
+            curso = orientacao.nome_do_curso
+
+            # Contar cada orientação individualmente por curso
+            contagem_por_curso[curso] = contagem_por_curso.get(curso, 0) + 1
 
     # Converter para o formato adequado para o JSON
-    dados = {item['nome_do_curso']: item['total'] for item in contagem_por_curso}
+    dados = {curso: total for curso, total in contagem_por_curso.items()}
 
     return JsonResponse(dados)
 
