@@ -589,7 +589,7 @@ h1 {
     <div class="cardHeadersContainer">
         <div class="cardHeader">
           <h2>Orientações de {{orientador}} por Ano</h2>
-          <button id="toggleDropdown1" class="select-courses-button">Selecionar Cursos</button>
+          <button id="toggleDropdown1" class="select-courses-button">Selecionar Ano</button>
           <div id="dropdown1" class="courses-dropdown" style="display: none;"></div>
           <div class="chart-container">
               <canvas id="myChart1"></canvas>
@@ -940,13 +940,21 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
   let chart;
   let orientador = encodeURIComponent("{{ orientador }}");
+  let palavraChaveAleatoriaPorAno = {};
 
   fetch(`/api/producao-cientifica/palavras-chave-orientador/${orientador}`)
       .then(response => response.json())
       .then(dados => {
           const anos = Object.keys(dados).sort((a, b) => a - b);
           const dropdown4 = document.getElementById('dropdown4');
+
           anos.forEach(ano => {
+              let palavras = Object.entries(dados[ano]);
+              if (palavras.every(([_, freq]) => freq === 1)) {
+                  let indiceAleatorio = Math.floor(Math.random() * palavras.length);
+                  palavraChaveAleatoriaPorAno[ano] = palavras[indiceAleatorio][0];
+              }
+
               const checkbox = document.createElement('input');
               checkbox.type = 'checkbox';
               checkbox.id = `myChart4-${ano}`;
@@ -967,15 +975,20 @@ document.addEventListener('DOMContentLoaded', function() {
           }
 
           const ctx = document.getElementById('myChart4').getContext('2d');
+          let coresGrafico = gerarCorAleatoria();
           chart = new Chart(ctx, {
               type: 'line',
               data: {
                   labels: anos,
                   datasets: [{
                       label: 'Palavras-chave Emergentes por Ano',
-                      data: [],
-                      backgroundColor: 'rgba(0, 123, 255, 0.5)',
-                      borderColor: 'rgba(0, 123, 255, 1)',
+                      data: anos.map(ano => {
+                          let palavrasAno = dados[ano];
+                          let maxFreq = Math.max(...Object.values(palavrasAno));
+                          return maxFreq;
+                      }),
+                      backgroundColor: coresGrafico[0], 
+                      borderColor: coresGrafico[1], 
                       borderWidth: 2,
                       fill: 'origin',
                       tension: 0.4
@@ -990,7 +1003,8 @@ document.addEventListener('DOMContentLoaded', function() {
                       tooltip: {
                           callbacks: {
                               label: function(context) {
-                                  return `${context.raw.termo}\n${context.raw.y} ocorrências`;
+                                  let ano = context.label;
+                                  return gerarTooltipLabel(dados[ano], ano);
                               }
                           }
                       },
@@ -1001,46 +1015,46 @@ document.addEventListener('DOMContentLoaded', function() {
               }
           });
 
+          atualizarGrafico(dados); // Inicializa o gráfico e o resumo numérico
+
           function atualizarGrafico(dadosCompletos) {
               const anosSelecionados = anos.filter(ano => document.getElementById(`myChart4-${ano}`).checked);
-              chart.data.labels = anosSelecionados;
-              chart.data.datasets[0].data = anosSelecionados.map(ano => {
-                  let maxFreq = 0;
-                  let maxTermo = '';
-                  for (let termo in dadosCompletos[ano]) {
-                      if (dadosCompletos[ano][termo] > maxFreq) {
-                          maxFreq = dadosCompletos[ano][termo];
-                          maxTermo = termo;
-                      }
-                  }
-                  return { y: maxFreq, termo: maxTermo };
+              let frequencias = {};
+
+              anosSelecionados.forEach(ano => {
+                  Object.entries(dadosCompletos[ano]).forEach(([termo, freq]) => {
+                      frequencias[termo] = (frequencias[termo] || 0) + freq;
+                  });
               });
+
+              let dadosGrafico = anosSelecionados.map(ano => {
+                  let maxFreq = Math.max(...Object.values(dadosCompletos[ano]));
+                  return { x: ano, y: maxFreq };
+              });
+
+              chart.data.labels = anosSelecionados;
+              chart.data.datasets[0].data = dadosGrafico;
               chart.update();
-              atualizarResumoNumerico(dadosCompletos, anosSelecionados);
+
+              atualizarResumoNumerico(frequencias);
           }
 
-          function atualizarResumoNumerico(dadosCompletos, anosSelecionados) {
+          function atualizarResumoNumerico(frequencias) {
               const resumoElemento = document.getElementById('resumoNumericoMyChart4');
               resumoElemento.innerHTML = '';
-              let palavrasTotais = {};
-              anosSelecionados.forEach(ano => {
-                  for (let termo in dadosCompletos[ano]) {
-                      palavrasTotais[termo] = (palavrasTotais[termo] || 0) + dadosCompletos[ano][termo];
-                  }
-              });
-              let topPalavras = Object.entries(palavrasTotais).sort((a, b) => b[1] - a[1]).slice(0, 3);
-              topPalavras.forEach(([termo, freq]) => {
+              let palavrasOrdenadas = Object.entries(frequencias).sort((a, b) => b[1] - a[1]).slice(0, 3);
+
+              palavrasOrdenadas.forEach(([termo, freq], index) => {
                   const corBarra = gerarCorAleatoria();
                   const barraProgresso = `<div class="barra-progresso-container-mychart4" title="${freq} ocorrências">
-                      <div class="barra-progresso-mychart4" style="width: 100%; background-color: ${corBarra};"></div>
+                      <div class="barra-progresso-mychart4" style="width: ${freq / palavrasOrdenadas[0][1] * 100}%; background-color: ${corBarra[index % corBarra.length]};"></div>
                   </div>`;
-                  resumoElemento.innerHTML += `<div class="palavra-chave-resumo-mychart4">
-                      <span>${termo}</span>${barraProgresso}
-                  </div>`;
+                  resumoElemento.innerHTML += `
+                      <div class="palavra-chave-resumo-mychart4">
+                          <span>${termo}</span>${barraProgresso}
+                      </div>`;
               });
           }
-
-          atualizarGrafico(dados);
 
           document.getElementById('toggleDropdown4').onclick = () => {
               const dropdown = document.getElementById('dropdown4');
@@ -1051,13 +1065,31 @@ document.addEventListener('DOMContentLoaded', function() {
           console.error('Erro ao buscar dados: ', error);
       });
 
+  function gerarTooltipLabel(dadosAno, ano) {
+      if (palavraChaveAleatoriaPorAno[ano]) {
+          return `${palavraChaveAleatoriaPorAno[ano]}\n1 ocorrência`;
+      } else {
+          let palavras = Object.entries(dadosAno);
+          palavras.sort((a, b) => b[1] - a[1]);
+          let maxFreq = palavras[0][1];
+          let palavrasMesmaFreq = palavras.filter(([_, freq]) => freq === maxFreq);
+          let label = palavrasMesmaFreq.map(([termo, _]) => termo).join(", ");
+          let labelFreq = palavrasMesmaFreq.length > 1 ? "ocorrências cada" : "ocorrências";
+          return `${label}\n${maxFreq} ${labelFreq}`;
+      }
+  }
+
   function gerarCorAleatoria() {
-      const r = Math.floor(Math.random() * 256);
-      const g = Math.floor(Math.random() * 256);
-      const b = Math.floor(Math.random() * 256);
-      return `rgba(${r}, ${g}, ${b}, 1)`;
+    const r1 = Math.floor(Math.random() * 256);
+    const g1 = Math.floor(Math.random() * 256);
+    const b1 = Math.floor(Math.random() * 256);
+    const r2 = Math.floor(Math.random() * 256);
+    const g2 = Math.floor(Math.random() * 256);
+    const b2 = Math.floor(Math.random() * 256);
+    return [`rgba(${r1}, ${g1}, ${b1}, 0.5)`, `rgba(${r2}, ${g2}, ${b2}, 1)`];
   }
 });
+
 
 </script>
 

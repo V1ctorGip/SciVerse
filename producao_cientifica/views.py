@@ -341,10 +341,10 @@ def palavras_chave_orientador(request, orientador):
         for palavra in publicacao.palavras_chave.all():
             frequencia_palavras_por_ano[ano][palavra.termo] += 1
 
-    # Filtrar para manter apenas as palavras-chave mais frequentes por ano
     resultado = {}
     for ano, palavras in frequencia_palavras_por_ano.items():
-        palavras_mais_frequentes = sorted(palavras.items(), key=lambda x: x[1], reverse=True)[:5]  # Top 5 palavras-chave
-        resultado[ano] = {termo: frequencia for termo, frequencia in palavras_mais_frequentes}
+        max_freq = max(palavras.values(), default=0)
+        palavras_mais_frequentes = {termo: freq for termo, freq in palavras.items() if freq == max_freq}
+        resultado[ano] = palavras_mais_frequentes
 
     return JsonResponse(resultado)
