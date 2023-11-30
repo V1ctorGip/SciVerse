@@ -33,9 +33,24 @@ def home(request):
     orientadores = set(normalize_string(orientador['nome_orientador']) for orientador in ProducaoCientifica.objects.values('nome_orientador'))
     distinct_orientadores_count = len(orientadores)
 
+    # Adicionando a lógica para contar os orientadores multidisciplinares
+    orientacoes = ProducaoCientifica.objects.values('nome_orientador', 'nome_do_curso').distinct()
+    orientadores_multidisciplinares = {}
+    for orientacao in orientacoes:
+        orientador = normalize_string(orientacao['nome_orientador'])
+        curso = orientacao['nome_do_curso']
+
+        if orientador not in orientadores_multidisciplinares:
+            orientadores_multidisciplinares[orientador] = set()
+
+        orientadores_multidisciplinares[orientador].add(curso)
+
+    total_orientadores_multidisciplinares = sum(len(categorizar_cursos(cursos)) > 1 for cursos in orientadores_multidisciplinares.values())
+
     context = {
         'total_publicacoes': total_publicacoes,
-        'distinct_orientadores_count': distinct_orientadores_count
+        'distinct_orientadores_count': distinct_orientadores_count,
+        'total_orientadores_multidisciplinares': total_orientadores_multidisciplinares  
     }
     return render(request, 'home.html', context)
 
@@ -386,3 +401,79 @@ def palavras_chave_orientador(request, orientador):
         resultado[ano] = palavras_mais_frequentes
 
     return JsonResponse(resultado)
+
+
+def normalize_string(s):
+    """Remove acentos, espaços e converte para minúsculas."""
+    return ''.join(unicodedata.normalize('NFKD', ch).encode('ASCII', 'ignore').decode('ASCII').lower() for ch in s if not ch.isspace())
+
+def categorizar_cursos(cursos):
+    areas_mapeamento = {
+        'Medicina e Saúde': ['Biomedicina', 'Enfermagem', 'Farmácia', 'Fisioterapia', 'Psicologia', 'Medicina Veterinária', 'Odontologia', 'Curso Superior de Tecnologia em Estética e Cosmética', 'Educação Física - Bacharelado'],
+        'Tecnologia e Computação': ['Ciência da Computação', 'Engenharia de Software', 'Sistemas de Informação'],
+        'Engenharia e Arquitetura': ['Arquitetura e Urbanismo', 'Engenharia Civil', 'Engenharia de Minas'],
+        'Ciências Agrárias': ['Agronomia', 'Zootecnia', 'Ciências Ambientais'],
+        'Direito': ['Ciências sociais e humanas'],
+        'Ciências Contábeis': ['Ciências sociais e econômicas'],
+        # Adicione mais áreas e cursos conforme necessário
+    }
+
+    areas = set()
+    for curso in cursos:
+        for area, cursos_lista in areas_mapeamento.items():
+            if curso in cursos_lista:
+                areas.add(area)
+    return areas
+
+def top_orientadores_multidisciplinar(request):
+    orientacoes = ProducaoCientifica.objects.values('nome_orientador', 'nome_do_curso').distinct()
+
+    orientadores = {}
+    for orientacao in orientacoes:
+        orientador = normalize_string(orientacao['nome_orientador'])
+        curso = orientacao['nome_do_curso']
+
+        if orientador not in orientadores:
+            orientadores[orientador] = {
+                'nome_original': orientacao['nome_orientador'],
+                'cursos': set(),
+            }
+
+        orientadores[orientador]['cursos'].add(curso)
+
+    dados = []
+    for orientador, info in orientadores.items():
+        areas = categorizar_cursos(info['cursos'])
+        if len(areas) > 1:  # Filtrar para multidisciplinaridade
+            dados.append({
+                'nome_orientador': info['nome_original'],
+                'orientacoes_por_area': areas,
+                'quantidade_areas': len(areas)
+            })
+
+    # Contagem total de orientadores multidisciplinares
+    total_orientadores_multidisciplinares = len(dados)
+
+    # Filtrar e ordenar os orientadores por multidisciplinaridade e nome
+    dados_filtrados = sorted(
+        dados, 
+        key=lambda x: (-x['quantidade_areas'], x['nome_orientador'])
+    )
+
+    # Tratamento para requisições AJAX com busca
+    if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+        search_query = request.GET.get('search', '').lower()
+        search_normalized = normalize_string(search_query)
+
+        dados_filtrados_ajax = [
+            d for d in dados
+            if search_normalized in normalize_string(d['nome_orientador']) or
+               any(search_normalized in normalize_string(area) for area in d['orientacoes_por_area'])
+        ]
+
+        return JsonResponse({'orientadores': dados_filtrados_ajax}, safe=False)
+
+    return render(request, 'ranking_multidisciplinar.html', {
+        'orientadores': dados_filtrados,
+        'total_orientadores_multidisciplinares': total_orientadores_multidisciplinares
+    })

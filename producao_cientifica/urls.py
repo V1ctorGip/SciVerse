@@ -16,7 +16,7 @@ urlpatterns = [
     path('producao-cientifica/top-orientadores-comparativo/', views.top_orientadores_comparativo, name='top-orientadores-comparativo'),
     path('producao-cientifica/orientacoes-por-curso/<str:nome_orientador>/', views.orientacoes_por_curso, name='api-orientacoes-por-curso'),
     path('producao-cientifica/palavras-chave-orientador/<str:orientador>/', views.palavras_chave_orientador, name='palavras-chave-orientador'),
-   
+    path('producao-cientifica/top-multidisciplinar/', views.top_orientadores_multidisciplinar, name='top-multidisciplinar'),
 ]
 
 

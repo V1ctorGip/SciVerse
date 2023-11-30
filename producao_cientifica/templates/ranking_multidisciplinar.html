@@ -1,0 +1,93 @@
+{% extends "template.html" %}
+
+{% block custom_styles %}
+<style>
+    .main-container {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+
+    .heading {
+        margin-bottom: 30px;
+        color: #2a2185;
+        text-align: center;
+    }
+
+    #rankingMultidisciplinarTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #rankingMultidisciplinarTable thead {
+        background-color: #2a2185;
+        color: #fff;
+    }
+
+    #rankingMultidisciplinarTable th, #rankingMultidisciplinarTable td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    #rankingMultidisciplinarTable tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+
+  
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="main-container">
+        <h2 class="heading">Top {{ total_orientadores_multidisciplinares }} Orientadores Multidisciplinares</h2>
+        <table id="rankingMultidisciplinarTable" class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome Orientador</th>
+                    <th>Orientações por Área</th>
+                </tr>
+            </thead>
+             <tbody>
+                {% for orientador in orientadores %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ orientador.nome_orientador }}</td>
+                    <td>{{ orientador.orientacoes_por_area | join:", " }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#search').on('keyup', function() {
+            var query = $(this).val().toLowerCase();
+            $.ajax({
+                url: "{% url 'top-multidisciplinar' %}",
+                data: { 'search': query },
+                dataType: 'json',
+                success: function(data) {
+                    var tbody = $('#rankingMultidisciplinarTable tbody');
+                    tbody.empty();
+                    $.each(data.orientadores, function(index, orientador) {
+                        var row = `<tr>
+                            <td>${index + 1}</td>
+                            <td>${orientador.nome_orientador}</td>
+                            <td>${orientador.orientacoes_por_area.join(", ")}</td>
+                        </tr>`;
+                        tbody.append(row);
+                    });
+                }
+            });
+        });
+    });
+</script>
+{% endblock %}

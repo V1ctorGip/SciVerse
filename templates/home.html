@@ -661,22 +661,24 @@
             </div>
           </div>
 
-          <div class="card">
-            <div>
-              <div class="numbers">TOP 3</div>
-              <div class="cardName">Ranking de orientações</div>
+          <a href="{% url 'top-multidisciplinar' %}" class="card-link" style="text-decoration: none;">
+            <div class="card">
+              <div>
+                <div class="numbers">TOP  {{ total_orientadores_multidisciplinares }}</div>
+                <div class="cardName">Ranking de Multidisciplinaridade</div>
+              </div>
+  
+              <div class="iconBx">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                  class="icon icon-tabler icon-tabler-crown" width="44"
+                  height="44" viewBox="0 0 24 24" stroke-width="1.5"
+                  stroke="#FFD700" fill="#FFD700" stroke-linecap="round"
+                  stroke-linejoin="round">
+                  <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z" />
+                </svg>
+              </div>
             </div>
-
-            <div class="iconBx">
-              <svg xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-crown" width="44"
-                height="44" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="#FFD700" fill="#FFD700" stroke-linecap="round"
-                stroke-linejoin="round">
-                <path d="M12 6l4 6l5 -4l-2 10h-14l-2 -10l5 4z" />
-              </svg>
-            </div>
-          </div>
+          </a>
 
           <a href="{% url 'lista_de_publicacoes' %}" class="cardLink">
             <div class="card">
