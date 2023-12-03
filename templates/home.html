@@ -620,14 +620,7 @@
               <span class="title">Dashboard</span>
             </a>
           </li>
-          <li>
-            <a href="#">
-              <span class="icon">
-                <ion-icon name="settings-outline"></ion-icon>
-              </span>
-              <span class="title">Configurações</span>
-            </a>
-          </li>
+        
           <li>
             <a href="#">
               <span class="icon">
@@ -702,9 +695,10 @@
             </div>
           </a>
 
+        <a href="{% url 'top-palavras-chave' %}"class="cardLink">
           <div class="card">
             <div>
-              <div class="numbers">7.400</div>
+              <div class="numbers">{{ total_palavras_chave }}</div>
               <div class="cardName">Quantidade de Palavras-chave</div>
             </div>
 
@@ -723,7 +717,8 @@
             </div>
 
           </div>
-        </div>
+         </div>
+      <a/>
 
         <div class="cardHeadersContainer">
           <div class="cardHeader">

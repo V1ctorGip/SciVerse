@@ -22,7 +22,7 @@ class ProducaoCientifica(models.Model):
     link_arquivo = models.URLField()
     autores = models.ManyToManyField(Autor)
     palavras_chave = models.ManyToManyField(PalavraChave)
-
+    PalavrasChave = models.TextField()
 
 class Person(models.Model):
     name = models.CharField(max_length=100)

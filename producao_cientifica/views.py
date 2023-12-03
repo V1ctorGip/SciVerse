@@ -16,6 +16,9 @@ import unicodedata
 import re
 from django.shortcuts import render, get_object_or_404,Http404
 import logging
+from django.db.models.functions import Coalesce
+from .models import PalavraChave
+
 
 def home(request):
     total_publicacoes = ProducaoCientifica.objects.count()
@@ -32,6 +35,7 @@ def home(request):
     total_publicacoes = ProducaoCientifica.objects.count()
     orientadores = set(normalize_string(orientador['nome_orientador']) for orientador in ProducaoCientifica.objects.values('nome_orientador'))
     distinct_orientadores_count = len(orientadores)
+    total_palavras_chave = contar_palavras_chave()
 
     # Adicionando a lógica para contar os orientadores multidisciplinares
     orientacoes = ProducaoCientifica.objects.values('nome_orientador', 'nome_do_curso').distinct()
@@ -50,7 +54,8 @@ def home(request):
     context = {
         'total_publicacoes': total_publicacoes,
         'distinct_orientadores_count': distinct_orientadores_count,
-        'total_orientadores_multidisciplinares': total_orientadores_multidisciplinares  
+        'total_orientadores_multidisciplinares': total_orientadores_multidisciplinares,
+        'total_palavras_chave': total_palavras_chave
     }
     return render(request, 'home.html', context)
 
@@ -409,13 +414,13 @@ def normalize_string(s):
 
 def categorizar_cursos(cursos):
     areas_mapeamento = {
-        'Medicina e Saúde': ['Biomedicina', 'Enfermagem', 'Farmácia', 'Fisioterapia', 'Psicologia', 'Medicina Veterinária', 'Odontologia', 'Curso Superior de Tecnologia em Estética e Cosmética', 'Educação Física - Bacharelado'],
+        'Medicina e Saúde': ['Biomedicina', 'Enfermagem', 'Farmácia', 'Fisioterapia', 'Psicologia', 'Medicina Veterinária', 
+                             'Odontologia', 'Curso Superior de Tecnologia em Estética e Cosmética', 'Educação Física - Bacharelado'],
         'Tecnologia e Computação': ['Ciência da Computação', 'Engenharia de Software', 'Sistemas de Informação'],
         'Engenharia e Arquitetura': ['Arquitetura e Urbanismo', 'Engenharia Civil', 'Engenharia de Minas'],
-        'Ciências Agrárias': ['Agronomia', 'Zootecnia', 'Ciências Ambientais'],
+        'Ciências Agrárias': ['Agronomia'],
         'Direito': ['Ciências sociais e humanas'],
         'Ciências Contábeis': ['Ciências sociais e econômicas'],
-        # Adicione mais áreas e cursos conforme necessário
     }
 
     areas = set()
@@ -476,4 +481,24 @@ def top_orientadores_multidisciplinar(request):
     return render(request, 'ranking_multidisciplinar.html', {
         'orientadores': dados_filtrados,
         'total_orientadores_multidisciplinares': total_orientadores_multidisciplinares
+    })
+
+def contar_palavras_chave():
+    try:
+        total_palavras_chave = ProducaoCientifica.objects \
+            .aggregate(total=Coalesce(Count('palavras_chave__termo', distinct=True), 0))['total']
+    except Exception as e:
+        print(f"Erro ao contar palavras-chave: {e}")
+        total_palavras_chave = 0
+    
+    return total_palavras_chave
+
+
+def top_palavras_chave(request):
+    palavras_chave_top = (PalavraChave.objects
+                          .annotate(num_ocorrencias=Count('producaocientifica'))
+                          .order_by('-num_ocorrencias')[:10])
+
+    return render(request, 'top_palavras_chave.html', {
+        'palavras_chave_top': palavras_chave_top,
     })

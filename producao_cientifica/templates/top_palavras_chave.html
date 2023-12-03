@@ -1,0 +1,69 @@
+{% extends "template.html" %}
+
+{% block custom_styles %}
+<style>
+    .main-container {
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+
+    .heading {
+        margin-bottom: 30px;
+        color: #2a2185;
+        text-align: center;
+    }
+
+    #topPalavrasChaveTable {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    #topPalavrasChaveTable thead {
+        background-color: #2a2185;
+        color: #fff;
+    }
+
+    #topPalavrasChaveTable th,  #topPalavrasChaveTable td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+
+    #topPalavrasChaveTable tbody tr:hover {
+        background-color: #f1f1f1;
+    }
+
+    #topPalavrasChaveTable th:nth-child(3),  #topPalavrasChaveTable td:nth-child(3) {
+        text-align: center; 
+    }
+  
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="main-container">
+        <h2 class="heading">Top 10 Palavras-chave Mais Frequentes</h2>
+        <table id="topPalavrasChaveTable" class="table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Palavra-chave</th>
+                    <th>Ocorrências</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for palavra_chave in palavras_chave_top %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ palavra_chave.termo }}</td>
+                    <td>{{ palavra_chave.num_ocorrencias }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
